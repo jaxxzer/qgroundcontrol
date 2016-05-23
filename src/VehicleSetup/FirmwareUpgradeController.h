@@ -62,6 +62,10 @@ public:
             HeliFirmware,
             PlaneFirmware,
             RoverFirmware,
+            SubBlueROVFirmware,
+            SubVectoredFirmware,
+            SubVectored6dofFirmware,
+            SubSimpleROVFirmware,
             DefaultVehicleFirmware
         } FirmwareVehicleType_t;
 

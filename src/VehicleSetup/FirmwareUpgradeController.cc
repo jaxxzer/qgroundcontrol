@@ -258,6 +258,10 @@ void FirmwareUpgradeController::_initFirmwareHash()
         { AutoPilotStackAPM, StableFirmware,    HeliFirmware,           "http://firmware.ardupilot.org/Copter/stable/PX4-heli/ArduCopter-v2.px4"},
         { AutoPilotStackAPM, StableFirmware,    PlaneFirmware,          "http://firmware.ardupilot.org/Plane/stable/PX4/ArduPlane-v2.px4"},
         { AutoPilotStackAPM, StableFirmware,    RoverFirmware,          "http://firmware.ardupilot.org/Rover/stable/PX4/APMrover2-v2.px4"},
+        { AutoPilotStackAPM, StableFirmware,    SubBlueROVFirmware,     "http://firmware.ardusub.com/Sub/stable/PX4-bluerov/ArduSub-v2.px4"},
+        { AutoPilotStackAPM, StableFirmware,    SubVectoredFirmware,    "http://firmware.ardusub.com/Sub/stable/PX4-vectored/ArduSub-v2.px4"},
+        { AutoPilotStackAPM, StableFirmware,    SubVectored6dofFirmware,"http://firmware.ardusub.com/Sub/stable/PX4-vectored6dof/ArduSub-v2.px4"},
+        { AutoPilotStackAPM, StableFirmware,    SubSimpleROVFirmware,   "http://firmware.ardusub.com/Sub/stable/PX4-simplerov/ArduSub-v2.px4"},
         { AutoPilotStackAPM, BetaFirmware,      QuadFirmware,           "http://firmware.ardupilot.org/Copter/beta/PX4-quad/ArduCopter-v2.px4"},
         { AutoPilotStackAPM, BetaFirmware,      X8Firmware,             "http://firmware.ardupilot.org/Copter/beta/PX4-octa-quad/ArduCopter-v2.px4"},
         { AutoPilotStackAPM, BetaFirmware,      HexaFirmware,           "http://firmware.ardupilot.org/Copter/beta/PX4-hexa/ArduCopter-v2.px4"},
@@ -275,7 +279,11 @@ void FirmwareUpgradeController::_initFirmwareHash()
         { AutoPilotStackAPM, DeveloperFirmware, Y6Firmware,             "http://firmware.ardupilot.org/Copter/latest/PX4-y6/ArduCopter-v2.px4"},
         { AutoPilotStackAPM, DeveloperFirmware, HeliFirmware,           "http://firmware.ardupilot.org/Copter/latest/PX4-heli/ArduCopter-v2.px4"},
         { AutoPilotStackAPM, DeveloperFirmware, PlaneFirmware,          "http://firmware.ardupilot.org/Plane/latest/PX4/ArduPlane-v2.px4"},
-        { AutoPilotStackAPM, DeveloperFirmware, RoverFirmware,          "http://firmware.ardupilot.org/Rover/latest/PX4/APMrover2-v2.px4"}
+        { AutoPilotStackAPM, DeveloperFirmware, RoverFirmware,          "http://firmware.ardupilot.org/Rover/latest/PX4/APMrover2-v2.px4"},
+        { AutoPilotStackAPM, DeveloperFirmware, SubBlueROVFirmware,     "http://firmware.ardusub.com/Sub/latest/PX4-bluerov/ArduSub-v2.px4"},
+        { AutoPilotStackAPM, DeveloperFirmware, SubVectoredFirmware,    "http://firmware.ardusub.com/Sub/latest/PX4-vectored/ArduSub-v2.px4"},
+        { AutoPilotStackAPM, DeveloperFirmware, SubVectored6dofFirmware,"http://firmware.ardusub.com/Sub/latest/PX4-vectored6dof/ArduSub-v2.px4"},
+        { AutoPilotStackAPM, DeveloperFirmware, SubSimpleROVFirmware,   "http://firmware.ardusub.com/Sub/latest/PX4-simplerov/ArduSub-v2.px4"}
     };
 
     //////////////////////////////////// PX4FMU aerocore firmwares //////////////////////////////////////////////////
@@ -790,6 +798,18 @@ QStringList FirmwareUpgradeController::apmAvailableVersions(void)
             break;
         case HeliFirmware:
             version = "Heli - ";
+            break;
+        case SubBlueROVFirmware:
+            version = "BlueROV - ";
+            break;
+        case SubVectoredFirmware:
+            version = "Vectored - ";
+            break;
+        case SubVectored6dofFirmware:
+            version = "Vectored6DOF - ";
+            break;
+        case SubSimpleROVFirmware:
+            version = "SimpleROV - ";
             break;
         case PlaneFirmware:
         case RoverFirmware:
