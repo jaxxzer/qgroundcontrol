@@ -90,8 +90,18 @@ void VideoReceiver::start()
     GstElement*     tee         = NULL;
     GstElement*     queue1      = NULL;
     GstElement*     queue2      = NULL;
-    GstElement*     filesink    = NULL;
+    GstElement*     fileSink    = NULL;
     GstElement*     mux         = NULL;
+
+    // Pads to link queues and tee
+    GstPad*         teeSrc1     = NULL; // tee source pad 1
+    GstPad*         teeSrc2     = NULL; // tee source pad 2
+    GstPad*         q1Sink      = NULL; // queue1 sink pad
+    GstPad*         q2Sink      = NULL; // queue2 sink pad
+
+    // Pads to link mp4 muxer to filesink
+    GstPad*         muxVideoSink    = NULL; // mux video sink pad
+    GstPad*         q2Src           = NULL; // queue2 source pad
 
     bool isUdp = _uri.contains("udp://");
 
@@ -156,12 +166,12 @@ void VideoReceiver::start()
             break;
         }
 
-        if((filesink = gst_element_factory_make("filesink", "mp4-file")) == NULL)  {
+        if((fileSink = gst_element_factory_make("filesink", "mp4-file")) == NULL)  {
             qCritical() << "VideoReceiver::start() failed. Error with gst_element_factory_make('filesink')";
             break;
         } else {
             qCritical() << qPrintable(QString("%1/%2").arg(QDir::homePath()).arg("qgcvideooutput.mp4"));
-            g_object_set(G_OBJECT(filesink), "location", qPrintable(QString("%1/%2").arg(QDir::homePath()).arg("qgcvideooutput.mp4")), NULL);
+            g_object_set(G_OBJECT(fileSink), "location", qPrintable(QString("%1/%2").arg(QDir::homePath()).arg("qgcvideooutput.mp4")), NULL);
         }
 
         if((mux = gst_element_factory_make("mp4mux", "mp4-muxer")) == NULL)  {
@@ -169,7 +179,7 @@ void VideoReceiver::start()
             break;
         }
 
-        gst_bin_add_many(GST_BIN(_pipeline), dataSource, demux, parser, tee, queue1, decoder, _videoSink, queue2, mux, filesink, NULL);
+        gst_bin_add_many(GST_BIN(_pipeline), dataSource, demux, parser, tee, queue1, decoder, _videoSink, queue2, mux, fileSink, NULL);
 
 //        if(isUdp) {
 //            res = gst_element_link_many(dataSource, demux, parser, decoder, tee, _videoSink, NULL);
@@ -177,62 +187,70 @@ void VideoReceiver::start()
 //            res = gst_element_link_many(demux, parser, decoder, tee, _videoSink, NULL);
 //        }
 
+        // Link the pipeline in front of the tee
         if(!gst_element_link_many(dataSource, demux, parser, tee, NULL)) {
-            qCritical() << "unable to link datasource and tee";
+            qCritical() << "Unable to link datasource and tee.";
             break;
         }
 
+        // Link the videostream to queue1
         if(!gst_element_link_many(queue1, decoder, _videoSink, NULL)) {
-            qCritical() << "unable to link queue1 and videosink";
+            qCritical() << "Unable to link queue1 and videosink.";
             break;
         }
 
-        if(!gst_element_link_many(mux, filesink, NULL)) {
-            qCritical() << "unable to link queue2 and filesink ";
+        // Link the mp4 muxer and filesink (mp4 muxer will be linked to queue2 later)
+        if(!gst_element_link_many(mux, fileSink, NULL)) {
+            qCritical() << "Unable to link muxer and filesink.";
            break;
         }
 
-         GstPad *tee_src1, *tee_src2;
-         GstPad *q1_sink, *q2_sink;
 
-         tee_src1 = gst_element_get_request_pad(tee, "src_%u");
-         q1_sink = gst_element_get_static_pad(queue1, "sink");
+        // Link the queues to the tee
+        teeSrc1 = gst_element_get_request_pad(tee, "src_%u");
+        q1Sink = gst_element_get_static_pad(queue1, "sink");
 
-         tee_src2 = gst_element_get_request_pad(tee, "src_%u");
-         q2_sink = gst_element_get_static_pad(queue2, "sink");
+        teeSrc2 = gst_element_get_request_pad(tee, "src_%u");
+        q2Sink = gst_element_get_static_pad(queue2, "sink");
+
+        // Link the tee to queue1
+        if (gst_pad_link(teeSrc1, q1Sink) != GST_PAD_LINK_OK ){
+            qCritical() << "Tee for queue1 could not be linked.\n";
+            break;
+        }
+
+        // Link the tee to the queue2
+        if (gst_pad_link (teeSrc2, q2Sink) != GST_PAD_LINK_OK) {
+            qCritical() << "Tee for queue2 could not be linked.\n";
+            break;
+        }
 
 
-         // Link the tee to queue1
-         if (gst_pad_link(tee_src1, q1_sink) != GST_PAD_LINK_OK ){
-            qCritical() << "Tee for q1 could not be linked.\n";
-         }
+        // Link the mp4 muxer video sink to queue2
+        if((muxVideoSink = gst_element_get_request_pad(mux, "video_%u")) == NULL) {
+            qCritical() << "no mp4mux pad";
+            break;
+        }
 
-         // Link the tee to the queue2
-         if (gst_pad_link (tee_src2, q2_sink) != GST_PAD_LINK_OK) {
-            qCritical() << "Tee for q2 could not be linked.\n";
-         }
+        if((q2Src = gst_element_get_static_pad(queue2, "src")) == NULL) {
+            qCritical() << "no q2 src pad";
+            break;
+        }
 
-         GstPad* mux_video_sink;
-         if((mux_video_sink = gst_element_get_request_pad(mux, "video_%u")) == NULL) {
-             qCritical() << "no mp4mux pad";
-         }
+        // link queue2 and mp4 muxer
+        if(gst_pad_link(q2Src, muxVideoSink) != GST_PAD_LINK_OK) {
+            qCritical() << "failed to link q2 and mux";
+            break;
+        }
 
-         GstPad* q2_src;
-         if((q2_src = gst_element_get_static_pad(queue2, "src")) == NULL) {
-             qCritical() << "no q2 src pad";
-         }
+        gst_object_unref(teeSrc1);
+        gst_object_unref(teeSrc2);
+        gst_object_unref(q1Sink);
+        gst_object_unref(q2Sink);
+        gst_object_unref(q2Src);
 
-         // link queue2 and mp4 muxer
-         if(gst_pad_link(q2_src, mux_video_sink) != GST_PAD_LINK_OK) {
-             qCritical() << "failed to link q2 and mux";
-         }
-
-         gst_object_unref (tee_src1);
-         gst_object_unref (tee_src2);
-         gst_object_unref (q1_sink);
-         gst_object_unref (q2_sink);
-         gst_object_unref (q2_src);
-
+        teeSrc1 = teeSrc2 = q1Sink = q2Sink = muxVideoSink = q2Src = NULL;
+        tee = queue1 = queue2 = mux = fileSink = NULL;
         dataSource = demux = parser = decoder = NULL;
 
         GstBus* bus = NULL;
@@ -275,6 +293,31 @@ void VideoReceiver::start()
             dataSource = NULL;
         }
 
+        if (tee != NULL) {
+            gst_object_unref(tee);
+            dataSource = NULL;
+        }
+
+        if (queue1 != NULL) {
+            gst_object_unref(queue1);
+            dataSource = NULL;
+        }
+
+        if (queue2 != NULL) {
+            gst_object_unref(queue2);
+            dataSource = NULL;
+        }
+
+        if (fileSink != NULL) {
+            gst_object_unref(fileSink);
+            dataSource = NULL;
+        }
+
+        if (mux != NULL) {
+            gst_object_unref(mux);
+            dataSource = NULL;
+        }
+
         if (_pipeline != NULL) {
             gst_object_unref(_pipeline);
             _pipeline = NULL;
@@ -293,7 +336,6 @@ void VideoReceiver::stop()
 #if defined(QGC_GST_STREAMING)
     if (_pipeline != NULL) {
         qCritical() << "stopping pipeline";
-
         gst_element_set_state(_pipeline, GST_STATE_NULL);
         gst_object_unref(_pipeline);
         _pipeline = NULL;
