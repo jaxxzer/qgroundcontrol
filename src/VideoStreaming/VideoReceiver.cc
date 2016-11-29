@@ -160,7 +160,7 @@ void VideoReceiver::start()
             qCritical() << "VideoReceiver::start() failed. Error with gst_element_factory_make('filesink')";
             break;
         } else {
-            g_object_set(G_OBJECT(filesink), "location", "/home/jack/qgcvideooutput", NULL);
+            g_object_set(G_OBJECT(filesink), "location", "/home/jack/qgcvideooutput.mp4", NULL);
         }
 
         if((mux = gst_element_factory_make("mp4mux", "mp4mux-guy")) == NULL)  {
@@ -186,7 +186,7 @@ void VideoReceiver::start()
             break;
         }
 
-        if(!gst_element_link_many(queue2, filesink, NULL)) {
+        if(!gst_element_link_many(mux, filesink, NULL)) {
             qCritical() << "unable to link queue2 and filesink ";
            break;
         }
@@ -210,12 +210,10 @@ void VideoReceiver::start()
          tee_q2_pad = gst_element_request_pad (tee, tee_src_pad_template, NULL, NULL);
          g_print ("Obtained request pad %s for q2 branch.\n", gst_pad_get_name (tee_q2_pad));
          q2_pad = gst_element_get_static_pad (queue2, "sink");
-//         if((q2_pad = gst_element_get_static_pad (queue2, "sink")) == NULL) {
-//             qCritical() << "q2 sink is null";
-//         }
+
 
          /* Link the tee to the queue 1 */
-         if (gst_pad_link (tee_q1_pad, q1_pad) != GST_PAD_LINK_OK ){
+         if (gst_pad_link(tee_q1_pad, q1_pad) != GST_PAD_LINK_OK ){
 
           qCritical() << "Tee for q1 could not be linked.\n";
 
@@ -226,6 +224,21 @@ void VideoReceiver::start()
 
           qCritical() << "Tee for q2 could not be linked.\n";
          }
+
+         GstPad* mux_video_sink;
+         if((mux_video_sink = gst_element_get_request_pad(mux, "video_%u")) == NULL) {
+             qCritical() << "no mp4mux pad";
+         }
+
+         GstPad* q2_src;
+         if((q2_src = gst_element_get_static_pad(queue2, "src")) == NULL) {
+             qCritical() << "no q2 src pad";
+         }
+
+         if(gst_pad_link(q2_src, mux_video_sink) != GST_PAD_LINK_OK) {
+             qCritical() << "failed to link q2 and mux";
+         }
+
 
          gst_object_unref (q1_pad);
          gst_object_unref (q2_pad);
