@@ -30,8 +30,7 @@ VideoReceiver::VideoReceiver(QObject* parent)
 VideoReceiver::~VideoReceiver()
 {
 #if defined(QGC_GST_STREAMING)
-    stop();
-    setVideoSink(NULL);
+    EOS();
 #endif
 }
 
@@ -243,16 +242,6 @@ void VideoReceiver::start()
          gst_object_unref (q1_pad);
          gst_object_unref (q2_pad);
 
-
-
-
-
-
-
-
-
-
-
         dataSource = demux = parser = decoder = NULL;
 
         GstBus* bus = NULL;
@@ -303,10 +292,17 @@ void VideoReceiver::start()
 #endif
 }
 
+
+void VideoReceiver::EOS() {
+    gst_element_send_event(_pipeline, gst_event_new_eos());
+}
+
 void VideoReceiver::stop()
 {
 #if defined(QGC_GST_STREAMING)
     if (_pipeline != NULL) {
+        qCritical() << "stopping pipeline";
+
         gst_element_set_state(_pipeline, GST_STATE_NULL);
         gst_object_unref(_pipeline);
         _pipeline = NULL;
@@ -325,6 +321,7 @@ void VideoReceiver::_onBusMessage(GstMessage* msg)
 {
     switch (GST_MESSAGE_TYPE(msg)) {
     case GST_MESSAGE_EOS:
+        qCritical() << "got eos";
         stop();
         break;
     case GST_MESSAGE_ERROR:

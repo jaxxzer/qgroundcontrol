@@ -35,6 +35,7 @@ public:
 
 public Q_SLOTS:
     void start  ();
+    void EOS    ();
     void stop   ();
     void setUri (const QString& uri);
 
