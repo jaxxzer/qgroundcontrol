@@ -16,6 +16,7 @@
 
 #include "VideoReceiver.h"
 #include <QDebug>
+#include <QDir>
 
 VideoReceiver::VideoReceiver(QObject* parent)
     : QObject(parent)
@@ -140,29 +141,30 @@ void VideoReceiver::start()
             break;
         }
 
-        if((tee = gst_element_factory_make("tee", "tee-guy")) == NULL)  {
+        if((tee = gst_element_factory_make("tee", "stream-file-tee")) == NULL)  {
             qCritical() << "VideoReceiver::start() failed. Error with gst_element_factory_make('tee')";
             break;
         }
 
-        if((queue1 = gst_element_factory_make("queue", "queue-guy")) == NULL)  {
+        if((queue1 = gst_element_factory_make("queue", "queue1")) == NULL)  {
             qCritical() << "VideoReceiver::start() failed. Error with gst_element_factory_make('queue1')";
             break;
         }
 
-        if((queue2 = gst_element_factory_make("queue", "queue2-guy")) == NULL)  {
+        if((queue2 = gst_element_factory_make("queue", "queue2")) == NULL)  {
             qCritical() << "VideoReceiver::start() failed. Error with gst_element_factory_make('queue2')";
             break;
         }
 
-        if((filesink = gst_element_factory_make("filesink", "filesink-guy")) == NULL)  {
+        if((filesink = gst_element_factory_make("filesink", "mp4-file")) == NULL)  {
             qCritical() << "VideoReceiver::start() failed. Error with gst_element_factory_make('filesink')";
             break;
         } else {
-            g_object_set(G_OBJECT(filesink), "location", "/home/jack/qgcvideooutput.mp4", NULL);
+            qCritical() << qPrintable(QString("%1%2").arg(QDir::homePath()).arg("qgcvideooutput2.mp4"));
+            g_object_set(G_OBJECT(filesink), "location", qPrintable(QString("%1/%2").arg(QDir::homePath()).arg("qgcvideooutput.mp4")), NULL);
         }
 
-        if((mux = gst_element_factory_make("mp4mux", "mp4mux-guy")) == NULL)  {
+        if((mux = gst_element_factory_make("mp4mux", "mp4-muxer")) == NULL)  {
             qCritical() << "VideoReceiver::start() failed. Error with gst_element_factory_make('mp4mux')";
             break;
         }
@@ -189,7 +191,6 @@ void VideoReceiver::start()
             qCritical() << "unable to link queue2 and filesink ";
            break;
         }
-
 
         GstPadTemplate *tee_src_pad_template;
          GstPad *tee_q1_pad, *tee_q2_pad;
@@ -237,7 +238,6 @@ void VideoReceiver::start()
          if(gst_pad_link(q2_src, mux_video_sink) != GST_PAD_LINK_OK) {
              qCritical() << "failed to link q2 and mux";
          }
-
 
          gst_object_unref (q1_pad);
          gst_object_unref (q2_pad);
