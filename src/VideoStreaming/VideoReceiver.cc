@@ -160,7 +160,7 @@ void VideoReceiver::start()
             qCritical() << "VideoReceiver::start() failed. Error with gst_element_factory_make('filesink')";
             break;
         } else {
-            qCritical() << qPrintable(QString("%1%2").arg(QDir::homePath()).arg("qgcvideooutput2.mp4"));
+            qCritical() << qPrintable(QString("%1/%2").arg(QDir::homePath()).arg("qgcvideooutput.mp4"));
             g_object_set(G_OBJECT(filesink), "location", qPrintable(QString("%1/%2").arg(QDir::homePath()).arg("qgcvideooutput.mp4")), NULL);
         }
 
@@ -192,37 +192,24 @@ void VideoReceiver::start()
            break;
         }
 
-        GstPadTemplate *tee_src_pad_template;
-         GstPad *tee_q1_pad, *tee_q2_pad;
-           GstPad *q1_pad, *q2_pad;
+         GstPad *tee_src1, *tee_src2;
+         GstPad *q1_sink, *q2_sink;
 
-         /* Manually link the Tee, which has "Request" pads */
-         if ( !(tee_src_pad_template = gst_element_class_get_pad_template (GST_ELEMENT_GET_CLASS (tee), "src_%u"))) {
-          gst_object_unref (_pipeline);
-          qCritical() << "Unable to get pad template";
+         tee_src1 = gst_element_get_request_pad(tee, "src_%u");
+         q1_sink = gst_element_get_static_pad(queue1, "sink");
+
+         tee_src2 = gst_element_get_request_pad(tee, "src_%u");
+         q2_sink = gst_element_get_static_pad(queue2, "sink");
+
+
+         // Link the tee to queue1
+         if (gst_pad_link(tee_src1, q1_sink) != GST_PAD_LINK_OK ){
+            qCritical() << "Tee for q1 could not be linked.\n";
          }
 
-         /* Obtaining request pads for the tee elements*/
-         tee_q1_pad = gst_element_request_pad (tee, tee_src_pad_template, NULL, NULL);
-         g_print ("Obtained request pad %s for q1 branch.\n", gst_pad_get_name (tee_q1_pad));
-         q1_pad = gst_element_get_static_pad (queue1, "sink");
-
-         tee_q2_pad = gst_element_request_pad (tee, tee_src_pad_template, NULL, NULL);
-         g_print ("Obtained request pad %s for q2 branch.\n", gst_pad_get_name (tee_q2_pad));
-         q2_pad = gst_element_get_static_pad (queue2, "sink");
-
-
-         /* Link the tee to the queue 1 */
-         if (gst_pad_link(tee_q1_pad, q1_pad) != GST_PAD_LINK_OK ){
-
-          qCritical() << "Tee for q1 could not be linked.\n";
-
-         }
-
-         /* Link the tee to the queue 2 */
-         if (gst_pad_link (tee_q2_pad, q2_pad) != GST_PAD_LINK_OK) {
-
-          qCritical() << "Tee for q2 could not be linked.\n";
+         // Link the tee to the queue2
+         if (gst_pad_link (tee_src2, q2_sink) != GST_PAD_LINK_OK) {
+            qCritical() << "Tee for q2 could not be linked.\n";
          }
 
          GstPad* mux_video_sink;
@@ -235,12 +222,16 @@ void VideoReceiver::start()
              qCritical() << "no q2 src pad";
          }
 
+         // link queue2 and mp4 muxer
          if(gst_pad_link(q2_src, mux_video_sink) != GST_PAD_LINK_OK) {
              qCritical() << "failed to link q2 and mux";
          }
 
-         gst_object_unref (q1_pad);
-         gst_object_unref (q2_pad);
+         gst_object_unref (tee_src1);
+         gst_object_unref (tee_src2);
+         gst_object_unref (q1_sink);
+         gst_object_unref (q2_sink);
+         gst_object_unref (q2_src);
 
         dataSource = demux = parser = decoder = NULL;
 
