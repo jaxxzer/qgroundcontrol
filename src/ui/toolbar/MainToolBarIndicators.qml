@@ -543,6 +543,7 @@ Item {
         //-------------------------------------------------------------------------
         //-- Link Info
         Item {
+            id:             link
             anchors.top:    parent.top
             anchors.bottom: parent.bottom
             width:          linkInfoColumn.width
@@ -564,7 +565,7 @@ Item {
                         sourceSize.width:   width
                         source:             "/qmlimages/LinkArrow.svg"
                         fillMode:           Image.PreserveAspectFit
-                        color:              qgcPal.text
+                        color:              link.linkColor
                     }
 
                     QGCColoredImage {
@@ -574,9 +575,29 @@ Item {
                         sourceSize.width:   width
                         source:             "/qmlimages/LinkArrow.svg"
                         fillMode:           Image.PreserveAspectFit
-                        color:              qgcPal.text
+                        color:              link.linkColor
                     }
                 }
+            }
+
+            property color linkColor: qgcPal.text
+
+            function beat() {
+                linkColor = "#0f801b";
+                beatTimer.start();
+            }
+
+            Timer {
+                id: beatTimer
+                interval: 200
+                running: false
+                repeat: false
+                onTriggered: link.linkColor = qgcPal.text;
+            }
+
+            Connections {
+                target:              _activeVehicle
+                onHeartbeatReceived: link.beat()
             }
 
             MouseArea {

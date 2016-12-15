@@ -620,6 +620,7 @@ signals:
     /// Used internally to move sendMessage call to main thread
     void _sendMessageOnLinkOnThread(LinkInterface* link, mavlink_message_t message);
 
+    void heartbeatReceived      ();
     void messageTypeChanged     ();
     void newMessageCountChanged ();
     void messageCountChanged    ();

@@ -817,6 +817,7 @@ void Vehicle::_handleHomePosition(mavlink_message_t& message)
 
 void Vehicle::_handleHeartbeat(mavlink_message_t& message)
 {
+    emit heartbeatReceived();
     _connectionActive();
 
     mavlink_heartbeat_t heartbeat;
