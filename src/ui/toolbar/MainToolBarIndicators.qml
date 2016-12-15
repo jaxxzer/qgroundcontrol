@@ -193,6 +193,57 @@ Item {
     }
 
     //---------------------------------------------
+    // Link Info
+    Component {
+        id: linkInfo
+
+        Rectangle {
+            width:  linkCol.width   + ScreenTools.defaultFontPixelWidth  * 3
+            height: linkCol.height  + ScreenTools.defaultFontPixelHeight * 2
+            radius: ScreenTools.defaultFontPixelHeight * 0.5
+            color:  qgcPal.window
+            border.color:   qgcPal.text
+
+            Column {
+                id:                 linkCol
+                spacing:            ScreenTools.defaultFontPixelHeight * 0.5
+                width:              Math.max(linkGrid.width, linkLabel.width)
+                anchors.margins:    ScreenTools.defaultFontPixelHeight
+                anchors.centerIn:   parent
+
+                QGCLabel {
+                    id:             linkLabel
+                    text:           qsTr("MAVLink Status")
+                    font.family:    ScreenTools.demiboldFontFamily
+                    anchors.horizontalCenter: parent.horizontalCenter
+                }
+
+                GridLayout {
+                    id:                 linkGrid
+                    anchors.margins:    ScreenTools.defaultFontPixelHeight
+                    columnSpacing:      ScreenTools.defaultFontPixelWidth
+                    columns:            2
+                    anchors.horizontalCenter: parent.horizontalCenter
+
+                    QGCLabel { text: qsTr("Packets Received:") }
+                    QGCLabel { text: _activeVehicle ? _activeVehicle.messagesReceived : "N/A" }
+                    QGCLabel { text: qsTr("Packets Lost:") }
+                    QGCLabel { text: _activeVehicle ? _activeVehicle.messagesLost : "N/A" }
+                    QGCLabel { text: qsTr("Current Drop Rate:") }
+                    QGCLabel { text: _activeVehicle ? _activeVehicle.recentDropPercent.toFixed(1).toString() + "%" : "N/A" }
+
+                }
+            }
+
+            Component.onCompleted: {
+                var pos = mapFromItem(toolBar, centerX - (width / 2), toolBar.height)
+                x = pos.x
+                y = pos.y + ScreenTools.defaultFontPixelHeight
+            }
+        }
+    }
+
+    //---------------------------------------------
     // RC RSSI Info
     Component {
         id: rcRSSIInfo
@@ -488,6 +539,52 @@ Item {
                 onClicked:      mainWindow.showPopUp(batteryInfo, mapToItem(toolBar, x, y).x + (width / 2))
             }
         }
+
+        //-------------------------------------------------------------------------
+        //-- Link Info
+        Item {
+            anchors.top:    parent.top
+            anchors.bottom: parent.bottom
+            width:          linkInfoColumn.width
+
+            Column {
+                id:             linkInfoColumn
+                anchors.top:    parent.top
+                anchors.bottom: parent.bottom
+
+                QGCLabel {
+                    text:            qsTr("MAVLink")
+                    font.pointSize:  ScreenTools.smallFontPointSize
+                }
+
+                Row {
+                    QGCColoredImage {
+                        width:              linkInfoColumn.width/2
+                        height:             width
+                        sourceSize.width:   width
+                        source:             "/qmlimages/LinkArrow.svg"
+                        fillMode:           Image.PreserveAspectFit
+                        color:              qgcPal.text
+                    }
+
+                    QGCColoredImage {
+                        rotation:           180
+                        width:              linkInfoColumn.width/2
+                        height:             width
+                        sourceSize.width:   width
+                        source:             "/qmlimages/LinkArrow.svg"
+                        fillMode:           Image.PreserveAspectFit
+                        color:              qgcPal.text
+                    }
+                }
+            }
+
+            MouseArea {
+                anchors.fill:   parent
+                onClicked:      mainWindow.showPopUp(linkInfo, mapToItem(toolBar, x, y).x + (width / 2))
+            }
+        }
+
 
         //-------------------------------------------------------------------------
         //-- Mode Selector

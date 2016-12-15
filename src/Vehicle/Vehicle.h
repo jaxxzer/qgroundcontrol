@@ -255,6 +255,7 @@ public:
     Q_PROPERTY(uint                 messagesReceived        READ messagesReceived                                       NOTIFY messagesReceivedChanged)
     Q_PROPERTY(uint                 messagesSent            READ messagesSent                                           NOTIFY messagesSentChanged)
     Q_PROPERTY(uint                 messagesLost            READ messagesLost                                           NOTIFY messagesLostChanged)
+    Q_PROPERTY(float                recentDropPercent       READ recentDropPercent                                      NOTIFY messagesReceivedChanged)
     Q_PROPERTY(bool                 fixedWing               READ fixedWing                                              CONSTANT)
     Q_PROPERTY(bool                 multiRotor              READ multiRotor                                             CONSTANT)
     Q_PROPERTY(bool                 vtol                    READ vtol                                                   CONSTANT)
@@ -516,6 +517,7 @@ public:
     uint            messagesReceived        () { return _messagesReceived; }
     uint            messagesSent            () { return _messagesSent; }
     uint            messagesLost            () { return _messagesLost; }
+    float           recentDropPercent       () { return _recentDropPercent; }
     bool            flying                  () const { return _flying; }
     bool            guidedMode              () const;
     uint8_t         baseMode                () const { return _base_mode; }
@@ -839,6 +841,9 @@ private:
     uint                _messagesReceived;
     uint                _messagesSent;
     uint                _messagesLost;
+    uint                _recentMessagesReceived;
+    uint                _recentMessagesLost;
+    float               _recentDropPercent;
     uint8_t             _messageSeq;
     uint8_t             _compID;
     bool                _heardFrom;

@@ -372,11 +372,14 @@ Vehicle::~Vehicle()
 void
 Vehicle::resetCounters()
 {
-    _messagesReceived   = 0;
-    _messagesSent       = 0;
-    _messagesLost       = 0;
-    _messageSeq         = 0;
-    _heardFrom          = false;
+    _messagesReceived       = 0;
+    _messagesSent           = 0;
+    _messagesLost           = 0;
+    _recentMessagesReceived = 0;
+    _recentMessagesLost     = 0;
+    _recentDropPercent      = 0;
+    _messageSeq             = 0;
+    _heardFrom              = false;
 }
 
 void Vehicle::_mavlinkMessageReceived(LinkInterface* link, mavlink_message_t message)
@@ -392,6 +395,7 @@ void Vehicle::_mavlinkMessageReceived(LinkInterface* link, mavlink_message_t mes
 
     //-- Check link status
     _messagesReceived++;
+    _recentMessagesReceived++;
     emit messagesReceivedChanged();
     if(!_heardFrom) {
         if(message.msgid == MAVLINK_MSG_ID_HEARTBEAT) {
@@ -409,8 +413,17 @@ void Vehicle::_mavlinkMessageReceived(LinkInterface* link, mavlink_message_t mes
             } else {
                 packet_lost_count = seq_received - _messageSeq;
             }
+
             _messageSeq = message.seq + 1;
             _messagesLost += packet_lost_count;
+            _recentMessagesLost += packet_lost_count;
+
+            if(_recentMessagesReceived + _recentMessagesLost >= 100) {
+                _recentDropPercent = 100.0f * _recentMessagesLost / (_recentMessagesReceived + _recentMessagesLost);
+                _recentMessagesReceived = 0;
+                _recentMessagesLost = 0;
+            }
+
             if(packet_lost_count)
                 emit messagesLostChanged();
         }
