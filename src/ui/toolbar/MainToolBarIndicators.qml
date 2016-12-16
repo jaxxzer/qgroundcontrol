@@ -202,7 +202,19 @@ Item {
             height: linkCol.height  + ScreenTools.defaultFontPixelHeight * 2
             radius: ScreenTools.defaultFontPixelHeight * 0.5
             color:  qgcPal.window
-            border.color:   qgcPal.text
+            border.color: qgcPal.text
+
+            // Heartbeat indicator
+            Rectangle {
+                anchors.left: linkCol.left
+                anchors.top: linkCol.top
+                anchors.margins: linkCol.anchors.margins * 0.1
+
+                height:                  ScreenTools.defaultFontPixelWidth * 1.6
+                width:                  height
+                radius:                 width / 2
+                color:                  link.linkColor
+            }
 
             Column {
                 id:                 linkCol
@@ -213,10 +225,11 @@ Item {
 
                 QGCLabel {
                     id:             linkLabel
+                    anchors.horizontalCenter: parent.horizontalCenter
                     text:           qsTr("MAVLink Status")
                     font.family:    ScreenTools.demiboldFontFamily
-                    anchors.horizontalCenter: parent.horizontalCenter
                 }
+
 
                 GridLayout {
                     id:                 linkGrid
