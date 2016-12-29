@@ -25,8 +25,8 @@ SetupPage {
         id: subFramePageComponent
 
         Column {
+            id:     mainColumn
             width:      availableWidth
-            height:     availableHeight
 
             FactPanelController { id: controller; factPanel: subFramePage.viewPanel }
 
@@ -38,166 +38,242 @@ SetupPage {
                 _frameConfig.value = frame;
             }
 
+            property real _minW:        ScreenTools.defaultFontPixelWidth * 30
+            property real _boxWidth:    _minW
+            property real _boxSpace:    ScreenTools.defaultFontPixelWidth
+
+            readonly property real spacerHeight: ScreenTools.defaultFontPixelHeight
+
+            onWidthChanged: {
+                computeDimensions()
+            }
+
+            Component.onCompleted: computeDimensions()
+
+            function computeDimensions() {
+                var sw  = 0
+                var rw  = 0
+                var idx = Math.floor(mainColumn.width / (_minW + ScreenTools.defaultFontPixelWidth))
+                if(idx < 1) {
+                    _boxWidth = mainColumn.width
+                    _boxSpace = 0
+                } else {
+                    _boxSpace = 0
+                    if(idx > 1) {
+                        _boxSpace = ScreenTools.defaultFontPixelWidth
+                        sw = _boxSpace * (idx - 1)
+                    }
+                    rw = mainColumn.width - sw
+                    _boxWidth = rw / idx
+                }
+            }
+
+//            ListModel {
+//                id: subFrameModel
+
+//                ListElement {
+//                    name: "BlueROV2/Vectored"
+//                    resource:
+//                }
+//            }
+
             Flow {
-                anchors.topMargin:  ScreenTools.defaultFontPixelWidth
-                anchors.left:       parent.left
-                anchors.right:      parent.right
-                spacing:            ScreenTools.defaultFontPixelWidth
-                width:              parent.width
-                height:             parent.height
+                id:         flowView
+                width:      parent.width
+                spacing:    _boxSpace
 
                 Rectangle {
-                    readonly property int frameID: 2
-                    width:          (parent.width - 2 * ScreenTools.defaultFontPixelWidth)/3
-                    height:         (parent.height - ScreenTools.defaultFontPixelWidth)/2
-                    border.color: frameID == _frameConfig.value ? "green" : "transparent"
-                    border.width: 5
-
-                    Image {
-                        width:          parent.width - parent.border.width*2 - frameLabel.height
-                        height:         parent.height - parent.border.width*2 - frameLabel.height
-                        anchors.horizontalCenter: parent.horizontalCenter
-                        sourceSize.width:   width
-                        source:        "qrc:///qmlimages/Frames/Vectored.png"
-                        fillMode:       Image.PreserveAspectFit
-                    }
+                    width:  _boxWidth
+                    height: ScreenTools.defaultFontPixelHeight * 14
+                    color:  qgcPal.window
 
                     QGCLabel {
-                        id:                     frameLabel
-                        width:                  parent.width
-                        horizontalAlignment:    Text.AlignHCenter
-                        anchors.bottom:         parent.bottom
-                        font.pointSize:         ScreenTools.mediumFontPointSize
-                        text:                   qsTr("BlueROV2/Vectored Frame")
+                        id:     title0
+                        text:   "BlueROV2/Vectored"
                     }
 
-                    MouseArea{
-                        anchors.fill: parent
-                        onClicked: setFrameConfig(parent.frameID)
+                    Rectangle {
+                        readonly property int frameID: 0
+
+                        anchors.topMargin:  ScreenTools.defaultFontPixelHeight / 2
+                        anchors.top:        title0.bottom
+                        anchors.bottom:     parent.bottom
+                        anchors.left:       parent.left
+                        anchors.right:      parent.right
+                        color:              frameID == _frameConfig.value ? qgcPal.buttonHighlight : qgcPal.windowShade
+
+                        Image {
+                            anchors.margins:    ScreenTools.defaultFontPixelWidth
+                            anchors.top:        parent.top
+                            anchors.bottom:     parent.bottom
+                            anchors.left:       parent.left
+                            anchors.right:      parent.right
+                            fillMode:           Image.PreserveAspectFit
+                            smooth:             true
+                            mipmap:             true
+                            source:             "qrc:///qmlimages/Frames/Vectored.png"
+                        }
+
+                        MouseArea {
+                            anchors.fill: parent
+                            onClicked: setFrameConfig(parent.frameID)
+                        }
                     }
                 }
 
-
                 Rectangle {
-                    readonly property int frameID: 3
-                    width:          (parent.width - 2 * ScreenTools.defaultFontPixelWidth)/3
-                    height:         (parent.height - ScreenTools.defaultFontPixelWidth)/2
-                    border.color: frameID == _frameConfig.value ? "green" : "transparent"
-                    border.width: 5
-
-                    Image {
-                        width:          parent.width - parent.border.width*2 - frameLabel.height
-                        height:         parent.height - parent.border.width*2 - frameLabel.height
-                        anchors.horizontalCenter: parent.horizontalCenter
-                        sourceSize.width:   width
-                        source:        "qrc:///qmlimages/Frames/Vectored6DOF.png"
-                        fillMode:       Image.PreserveAspectFit
-                    }
+                    width:  _boxWidth
+                    height: ScreenTools.defaultFontPixelHeight * 14
+                    color:  qgcPal.window
 
                     QGCLabel {
-                        width:                  parent.width
-                        horizontalAlignment:    Text.AlignHCenter
-                        anchors.bottom:         parent.bottom
-                        font.pointSize:         ScreenTools.mediumFontPointSize
-                        text:                   qsTr("Vectored 6DOF Frame")
+                        id:     title1
+                        text:   "BlueROV2/Vectored"
                     }
 
-                    MouseArea{
-                        anchors.fill: parent
-                        onClicked: setFrameConfig(parent.frameID)
+                    Rectangle {
+                        readonly property int frameID: 0
+
+                        anchors.topMargin:  ScreenTools.defaultFontPixelHeight / 2
+                        anchors.top:        title1.bottom
+                        anchors.bottom:     parent.bottom
+                        anchors.left:       parent.left
+                        anchors.right:      parent.right
+                        color:              frameID == _frameConfig.value ? qgcPal.buttonHighlight : qgcPal.windowShade
+
+                        Image {
+                            anchors.margins:    ScreenTools.defaultFontPixelWidth
+                            anchors.top:        parent.top
+                            anchors.bottom:     parent.bottom
+                            anchors.left:       parent.left
+                            anchors.right:      parent.right
+                            fillMode:           Image.PreserveAspectFit
+                            smooth:             true
+                            mipmap:             true
+                            source:             "qrc:///qmlimages/Frames/Vectored.png"
+                        }
+
+                        MouseArea {
+                            anchors.fill: parent
+                            onClicked: setFrameConfig(parent.frameID)
+                        }
                     }
                 }
 
-
                 Rectangle {
-                    readonly property int frameID: 0
-                    width:          (parent.width - 2 * ScreenTools.defaultFontPixelWidth)/3
-                    height:         (parent.height - ScreenTools.defaultFontPixelWidth)/2
-                    border.color: frameID == _frameConfig.value ? "green" : "transparent"
-                    border.width: 5
-
-                    Image {
-                        width:          parent.width - parent.border.width*2 - frameLabel.height
-                        height:         parent.height - parent.border.width*2 - frameLabel.height
-                        anchors.horizontalCenter: parent.horizontalCenter
-                        sourceSize.width:   width
-                        source:        "qrc:///qmlimages/Frames/BlueROV1.png"
-                        fillMode:       Image.PreserveAspectFit
-                    }
+                    width:  _boxWidth
+                    height: ScreenTools.defaultFontPixelHeight * 14
+                    color:  qgcPal.window
 
                     QGCLabel {
-                        width:                  parent.width
-                        horizontalAlignment:    Text.AlignHCenter
-                        anchors.bottom:         parent.bottom
-                        font.pointSize:         ScreenTools.mediumFontPointSize
-                        text:                   qsTr("BlueROV1 Frame")
+                        id:     title1
+                        text:   "BlueROV2/Vectored"
                     }
 
-                    MouseArea{
-                        anchors.fill: parent
-                        onClicked: setFrameConfig(parent.frameID)
+                    Rectangle {
+                        readonly property int frameID: 0
+
+                        anchors.topMargin:  ScreenTools.defaultFontPixelHeight / 2
+                        anchors.top:        title1.bottom
+                        anchors.bottom:     parent.bottom
+                        anchors.left:       parent.left
+                        anchors.right:      parent.right
+                        color:              frameID == _frameConfig.value ? qgcPal.buttonHighlight : qgcPal.windowShade
+
+                        Image {
+                            anchors.margins:    ScreenTools.defaultFontPixelWidth
+                            anchors.top:        parent.top
+                            anchors.bottom:     parent.bottom
+                            anchors.left:       parent.left
+                            anchors.right:      parent.right
+                            fillMode:           Image.PreserveAspectFit
+                            smooth:             true
+                            mipmap:             true
+                            source:             "qrc:///qmlimages/Frames/Vectored.png"
+                        }
+
+                        MouseArea {
+                            anchors.fill: parent
+                            onClicked: setFrameConfig(parent.frameID)
+                        }
                     }
                 }
 
-
                 Rectangle {
-                    readonly property int frameID: 1
-                    width:          (parent.width - 2 * ScreenTools.defaultFontPixelWidth)/3
-                    height:         (parent.height - ScreenTools.defaultFontPixelWidth)/2
-                    border.color: frameID == _frameConfig.value ? "green" : "transparent"
-                    border.width: 5
-
-                    Image {
-                        width:          parent.width - parent.border.width*2 - frameLabel.height
-                        height:         parent.height - parent.border.width*2 - frameLabel.height
-                        anchors.horizontalCenter: parent.horizontalCenter
-                        sourceSize.width:   width
-                        source:        "qrc:///qmlimages/Frames/SimpleROV-3.png"
-                        fillMode:       Image.PreserveAspectFit
-                    }
+                    width:  _boxWidth
+                    height: ScreenTools.defaultFontPixelHeight * 14
+                    color:  qgcPal.window
 
                     QGCLabel {
-                        width:                  parent.width
-                        horizontalAlignment:    Text.AlignHCenter
-                        anchors.bottom:         parent.bottom
-                        font.pointSize:         ScreenTools.mediumFontPointSize
-                        text:                   qsTr("SimpleROV Frame")
+                        id:     title1
+                        text:   "BlueROV2/Vectored"
                     }
 
-                    MouseArea{
-                        anchors.fill: parent
-                        onClicked: setFrameConfig(parent.frameID)
+                    Rectangle {
+                        readonly property int frameID: 0
+
+                        anchors.topMargin:  ScreenTools.defaultFontPixelHeight / 2
+                        anchors.top:        title1.bottom
+                        anchors.bottom:     parent.bottom
+                        anchors.left:       parent.left
+                        anchors.right:      parent.right
+                        color:              frameID == _frameConfig.value ? qgcPal.buttonHighlight : qgcPal.windowShade
+
+                        Image {
+                            anchors.margins:    ScreenTools.defaultFontPixelWidth
+                            anchors.top:        parent.top
+                            anchors.bottom:     parent.bottom
+                            anchors.left:       parent.left
+                            anchors.right:      parent.right
+                            fillMode:           Image.PreserveAspectFit
+                            smooth:             true
+                            mipmap:             true
+                            source:             "qrc:///qmlimages/Frames/Vectored.png"
+                        }
+
+                        MouseArea {
+                            anchors.fill: parent
+                            onClicked: setFrameConfig(parent.frameID)
+                        }
                     }
                 }
 
-
                 Rectangle {
-                    readonly property int frameID: 1
-                    width:          (parent.width - 2 * ScreenTools.defaultFontPixelWidth)/3
-                    height:         (parent.height - ScreenTools.defaultFontPixelWidth)/2
-                    border.color: frameID == _frameConfig.value ? "green" : "transparent"
-                    border.width: 5
-
-                    Image {
-                        width:          parent.width - parent.border.width*2 - frameLabel.height
-                        height:         parent.height - parent.border.width*2 - frameLabel.height
-                        anchors.horizontalCenter: parent.horizontalCenter
-                        sourceSize.width:   width
-                        source:        "qrc:///qmlimages/Frames/SimpleROV-4.png"
-                        fillMode:       Image.PreserveAspectFit
-                    }
+                    width:  _boxWidth
+                    height: ScreenTools.defaultFontPixelHeight * 14
+                    color:  qgcPal.window
 
                     QGCLabel {
-                        width:                  parent.width
-                        horizontalAlignment:    Text.AlignHCenter
-                        anchors.bottom:         parent.bottom
-                        font.pointSize:         ScreenTools.mediumFontPointSize
-                        text:                   qsTr("SimpleROV Frame")
+                        id:     title1
+                        text:   "BlueROV2/Vectored"
                     }
 
-                    MouseArea{
-                        anchors.fill: parent
-                        onClicked: setFrameConfig(parent.frameID)
+                    Rectangle {
+                        readonly property int frameID: 0
+
+                        anchors.topMargin:  ScreenTools.defaultFontPixelHeight / 2
+                        anchors.top:        title1.bottom
+                        anchors.bottom:     parent.bottom
+                        anchors.left:       parent.left
+                        anchors.right:      parent.right
+                        color:              frameID == _frameConfig.value ? qgcPal.buttonHighlight : qgcPal.windowShade
+
+                        Image {
+                            anchors.margins:    ScreenTools.defaultFontPixelWidth
+                            anchors.top:        parent.top
+                            anchors.bottom:     parent.bottom
+                            anchors.left:       parent.left
+                            anchors.right:      parent.right
+                            fillMode:           Image.PreserveAspectFit
+                            smooth:             true
+                            mipmap:             true
+                            source:             "qrc:///qmlimages/Frames/Vectored.png"
+                        }
+
+                        MouseArea {
+                            anchors.fill: parent
+                            onClicked: setFrameConfig(parent.frameID)
+                        }
                     }
                 }
 
