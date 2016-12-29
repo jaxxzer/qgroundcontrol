@@ -68,216 +68,86 @@ SetupPage {
                 }
             }
 
-//            ListModel {
-//                id: subFrameModel
+            ListModel {
+                id: subFrameModel
 
-//                ListElement {
-//                    name: "BlueROV2/Vectored"
-//                    resource:
-//                }
-//            }
+                ListElement {
+                    name: "BlueROV2/Vectored"
+                    resource: "qrc:///qmlimages/Frames/Vectored.png"
+                    paramValue: 0
+                }
+
+                ListElement {
+                    name: "BlueROV1"
+                    resource: "qrc:///qmlimages/Frames/BlueROV1.png"
+                    paramValue: 1
+                }
+
+                ListElement {
+                    name: "Vectored-6DOF"
+                    resource: "qrc:///qmlimages/Frames/Vectored6DOF.png"
+                    paramValue: 2
+                }
+
+                ListElement {
+                    name: "SimpleROV-3"
+                    resource: "qrc:///qmlimages/Frames/SimpleROV-3.png"
+                    paramValue: 3
+                }
+
+                ListElement {
+                    name: "SimpleROV-4"
+                    resource: "qrc:///qmlimages/Frames/SimpleROV-4.png"
+                    paramValue: 4
+                }
+
+            }
 
             Flow {
                 id:         flowView
                 width:      parent.width
                 spacing:    _boxSpace
 
-                Rectangle {
-                    width:  _boxWidth
-                    height: ScreenTools.defaultFontPixelHeight * 14
-                    color:  qgcPal.window
-
-                    QGCLabel {
-                        id:     title0
-                        text:   "BlueROV2/Vectored"
-                    }
+                Repeater {
+                    model: subFrameModel
 
                     Rectangle {
-                        readonly property int frameID: 0
+                        width:  _boxWidth
+                        height: ScreenTools.defaultFontPixelHeight * 14
+                        color:  qgcPal.window
 
-                        anchors.topMargin:  ScreenTools.defaultFontPixelHeight / 2
-                        anchors.top:        title0.bottom
-                        anchors.bottom:     parent.bottom
-                        anchors.left:       parent.left
-                        anchors.right:      parent.right
-                        color:              frameID == _frameConfig.value ? qgcPal.buttonHighlight : qgcPal.windowShade
+                        QGCLabel {
+                            id:     title
+                            text:   subFrameModel.get(index).name
+                        }
 
-                        Image {
-                            anchors.margins:    ScreenTools.defaultFontPixelWidth
-                            anchors.top:        parent.top
+                        Rectangle {
+                            anchors.topMargin:  ScreenTools.defaultFontPixelHeight / 2
+                            anchors.top:        title.bottom
                             anchors.bottom:     parent.bottom
                             anchors.left:       parent.left
                             anchors.right:      parent.right
-                            fillMode:           Image.PreserveAspectFit
-                            smooth:             true
-                            mipmap:             true
-                            source:             "qrc:///qmlimages/Frames/Vectored.png"
-                        }
+                            color:              subFrameModel.get(index).paramValue == _frameConfig.value ? qgcPal.buttonHighlight : qgcPal.windowShade
 
-                        MouseArea {
-                            anchors.fill: parent
-                            onClicked: setFrameConfig(parent.frameID)
-                        }
-                    }
-                }
+                            Image {
+                                anchors.margins:    ScreenTools.defaultFontPixelWidth
+                                anchors.top:        parent.top
+                                anchors.bottom:     parent.bottom
+                                anchors.left:       parent.left
+                                anchors.right:      parent.right
+                                fillMode:           Image.PreserveAspectFit
+                                smooth:             true
+                                mipmap:             true
+                                source:             subFrameModel.get(index).resource
+                            }
 
-                Rectangle {
-                    width:  _boxWidth
-                    height: ScreenTools.defaultFontPixelHeight * 14
-                    color:  qgcPal.window
-
-                    QGCLabel {
-                        id:     title1
-                        text:   "BlueROV2/Vectored"
-                    }
-
-                    Rectangle {
-                        readonly property int frameID: 0
-
-                        anchors.topMargin:  ScreenTools.defaultFontPixelHeight / 2
-                        anchors.top:        title1.bottom
-                        anchors.bottom:     parent.bottom
-                        anchors.left:       parent.left
-                        anchors.right:      parent.right
-                        color:              frameID == _frameConfig.value ? qgcPal.buttonHighlight : qgcPal.windowShade
-
-                        Image {
-                            anchors.margins:    ScreenTools.defaultFontPixelWidth
-                            anchors.top:        parent.top
-                            anchors.bottom:     parent.bottom
-                            anchors.left:       parent.left
-                            anchors.right:      parent.right
-                            fillMode:           Image.PreserveAspectFit
-                            smooth:             true
-                            mipmap:             true
-                            source:             "qrc:///qmlimages/Frames/Vectored.png"
-                        }
-
-                        MouseArea {
-                            anchors.fill: parent
-                            onClicked: setFrameConfig(parent.frameID)
+                            MouseArea {
+                                anchors.fill: parent
+                                onClicked: setFrameConfig(subFrameModel.get(index).paramValue)
+                            }
                         }
                     }
                 }
-
-                Rectangle {
-                    width:  _boxWidth
-                    height: ScreenTools.defaultFontPixelHeight * 14
-                    color:  qgcPal.window
-
-                    QGCLabel {
-                        id:     title1
-                        text:   "BlueROV2/Vectored"
-                    }
-
-                    Rectangle {
-                        readonly property int frameID: 0
-
-                        anchors.topMargin:  ScreenTools.defaultFontPixelHeight / 2
-                        anchors.top:        title1.bottom
-                        anchors.bottom:     parent.bottom
-                        anchors.left:       parent.left
-                        anchors.right:      parent.right
-                        color:              frameID == _frameConfig.value ? qgcPal.buttonHighlight : qgcPal.windowShade
-
-                        Image {
-                            anchors.margins:    ScreenTools.defaultFontPixelWidth
-                            anchors.top:        parent.top
-                            anchors.bottom:     parent.bottom
-                            anchors.left:       parent.left
-                            anchors.right:      parent.right
-                            fillMode:           Image.PreserveAspectFit
-                            smooth:             true
-                            mipmap:             true
-                            source:             "qrc:///qmlimages/Frames/Vectored.png"
-                        }
-
-                        MouseArea {
-                            anchors.fill: parent
-                            onClicked: setFrameConfig(parent.frameID)
-                        }
-                    }
-                }
-
-                Rectangle {
-                    width:  _boxWidth
-                    height: ScreenTools.defaultFontPixelHeight * 14
-                    color:  qgcPal.window
-
-                    QGCLabel {
-                        id:     title1
-                        text:   "BlueROV2/Vectored"
-                    }
-
-                    Rectangle {
-                        readonly property int frameID: 0
-
-                        anchors.topMargin:  ScreenTools.defaultFontPixelHeight / 2
-                        anchors.top:        title1.bottom
-                        anchors.bottom:     parent.bottom
-                        anchors.left:       parent.left
-                        anchors.right:      parent.right
-                        color:              frameID == _frameConfig.value ? qgcPal.buttonHighlight : qgcPal.windowShade
-
-                        Image {
-                            anchors.margins:    ScreenTools.defaultFontPixelWidth
-                            anchors.top:        parent.top
-                            anchors.bottom:     parent.bottom
-                            anchors.left:       parent.left
-                            anchors.right:      parent.right
-                            fillMode:           Image.PreserveAspectFit
-                            smooth:             true
-                            mipmap:             true
-                            source:             "qrc:///qmlimages/Frames/Vectored.png"
-                        }
-
-                        MouseArea {
-                            anchors.fill: parent
-                            onClicked: setFrameConfig(parent.frameID)
-                        }
-                    }
-                }
-
-                Rectangle {
-                    width:  _boxWidth
-                    height: ScreenTools.defaultFontPixelHeight * 14
-                    color:  qgcPal.window
-
-                    QGCLabel {
-                        id:     title1
-                        text:   "BlueROV2/Vectored"
-                    }
-
-                    Rectangle {
-                        readonly property int frameID: 0
-
-                        anchors.topMargin:  ScreenTools.defaultFontPixelHeight / 2
-                        anchors.top:        title1.bottom
-                        anchors.bottom:     parent.bottom
-                        anchors.left:       parent.left
-                        anchors.right:      parent.right
-                        color:              frameID == _frameConfig.value ? qgcPal.buttonHighlight : qgcPal.windowShade
-
-                        Image {
-                            anchors.margins:    ScreenTools.defaultFontPixelWidth
-                            anchors.top:        parent.top
-                            anchors.bottom:     parent.bottom
-                            anchors.left:       parent.left
-                            anchors.right:      parent.right
-                            fillMode:           Image.PreserveAspectFit
-                            smooth:             true
-                            mipmap:             true
-                            source:             "qrc:///qmlimages/Frames/Vectored.png"
-                        }
-
-                        MouseArea {
-                            anchors.fill: parent
-                            onClicked: setFrameConfig(parent.frameID)
-                        }
-                    }
-                }
-
-
             }
         } // Column
     } // Component
