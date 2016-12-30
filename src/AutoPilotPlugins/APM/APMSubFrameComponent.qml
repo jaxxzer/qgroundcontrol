@@ -38,7 +38,7 @@ SetupPage {
                 _frameConfig.value = frame;
             }
 
-            property real _minW:        ScreenTools.defaultFontPixelWidth * 30
+            property real _minW:        ScreenTools.defaultFontPixelWidth * 60
             property real _boxWidth:    _minW
             property real _boxSpace:    ScreenTools.defaultFontPixelWidth
 
@@ -72,14 +72,14 @@ SetupPage {
                 id: subFrameModel
 
                 ListElement {
-                    name: "BlueROV2/Vectored"
-                    resource: "qrc:///qmlimages/Frames/Vectored.png"
+                    name: "BlueROV1"
+                    resource: "qrc:///qmlimages/Frames/BlueROV1.png"
                     paramValue: 0
                 }
 
                 ListElement {
-                    name: "BlueROV1"
-                    resource: "qrc:///qmlimages/Frames/BlueROV1.png"
+                    name: "BlueROV2/Vectored"
+                    resource: "qrc:///qmlimages/Frames/Vectored.png"
                     paramValue: 1
                 }
 
@@ -90,17 +90,28 @@ SetupPage {
                 }
 
                 ListElement {
+                    name: "Vectored-6DOF-90Degree"
+                    resource: "qrc:///qmlimages/Frames/Vectored6DOF-90.png"
+                    paramValue: 3
+                }
+
+                ListElement {
                     name: "SimpleROV-3"
                     resource: "qrc:///qmlimages/Frames/SimpleROV-3.png"
-                    paramValue: 3
+                    paramValue: 4
                 }
 
                 ListElement {
                     name: "SimpleROV-4"
                     resource: "qrc:///qmlimages/Frames/SimpleROV-4.png"
-                    paramValue: 4
+                    paramValue: 5
                 }
 
+                ListElement {
+                    name: "SimpleROV-5"
+                    resource: "qrc:///qmlimages/Frames/SimpleROV-5.png"
+                    paramValue: 6
+                }
             }
 
             Flow {
@@ -127,7 +138,7 @@ SetupPage {
                             anchors.bottom:     parent.bottom
                             anchors.left:       parent.left
                             anchors.right:      parent.right
-                            color:              subFrameModel.get(index).paramValue == _frameConfig.value ? qgcPal.buttonHighlight : qgcPal.windowShade
+                            color:              subFrameModel.get(index).paramValue == _frameConfig.value ? qgcPal.globalTheme === QGCPalette.Dark ? qgcPal.buttonHighlight : "#686868" : qgcPal.globalTheme === QGCPalette.Dark ? qgcPal.windowShade : "#F0F0F0"
 
                             Image {
                                 anchors.margins:    ScreenTools.defaultFontPixelWidth
@@ -143,7 +154,9 @@ SetupPage {
 
                             MouseArea {
                                 anchors.fill: parent
+
                                 onClicked: setFrameConfig(subFrameModel.get(index).paramValue)
+
                             }
                         }
                     }
