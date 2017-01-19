@@ -48,22 +48,20 @@
 <value code="4">Yaw</value>
 </values>
 </param>
-<param humanName="Rangefinder gain" name="ArduSub:RNGFND_GAIN" documentation="Used to adjust the speed with which the target altitude is changed when objects are sensed below the copter" user="Standard">
+<param humanName="Rangefinder gain" name="ArduSub:RNGFND_GAIN" documentation="Used to adjust the speed with which the target altitude is changed when objects are sensed below the sub" user="Standard">
 <field name="Range">0.01 2.0</field>
 <field name="Increment">0.01</field>
 </param>
 <param humanName="Battery Failsafe Enable" name="ArduSub:FS_BATT_ENABLE" documentation="Controls whether failsafe will be invoked when battery voltage or current runs low" user="Standard">
 <values>
 <value code="0">Disabled</value>
-<value code="1">Land</value>
-<value code="2">RTL</value>
 </values>
 </param>
-<param humanName="Failsafe battery voltage" name="ArduSub:FS_BATT_VOLTAGE" documentation="Battery voltage to trigger failsafe. Set to 0 to disable battery voltage failsafe. If the battery voltage drops below this voltage then the copter will RTL" user="Standard">
+<param humanName="Failsafe battery voltage" name="ArduSub:FS_BATT_VOLTAGE" documentation="Battery voltage to trigger failsafe. Set to 0 to disable battery voltage failsafe." user="Standard">
 <field name="Increment">0.1</field>
 <field name="Units">Volts</field>
 </param>
-<param humanName="Failsafe battery milliAmpHours" name="ArduSub:FS_BATT_MAH" documentation="Battery capacity remaining to trigger failsafe. Set to 0 to disable battery remaining failsafe. If the battery remaining drops below this level then the copter will RTL" user="Standard">
+<param humanName="Failsafe battery milliAmpHours" name="ArduSub:FS_BATT_MAH" documentation="Battery capacity remaining to trigger failsafe. Set to 0 to disable battery remaining failsafe." user="Standard">
 <field name="Increment">50</field>
 <field name="Units">mAh</field>
 </param>
@@ -202,7 +200,7 @@
 <value code="0">Disabled</value>
 </values>
 </param>
-<param humanName="ESC Calibration" name="ArduSub:ESC_CALIBRATION" documentation="Controls whether ArduCopter will enter ESC calibration on the next restart.  Do not adjust this parameter manually." user="Advanced">
+<param humanName="ESC Calibration" name="ArduSub:ESC_CALIBRATION" documentation="Controls whether ArduSub will enter ESC calibration on the next restart.  Do not adjust this parameter manually." user="Advanced">
 <values>
 <value code="0">Normal Start-up</value>
 <value code=" 1">Start-up in ESC Calibration mode if throttle high</value>
@@ -513,9 +511,7 @@
 </param>
 <param humanName="EKF Failsafe Action" name="ArduSub:FS_EKF_ACTION" documentation="Controls the action that will be taken when an EKF failsafe is invoked" user="Advanced">
 <values>
-<value code="1">Land</value>
-<value code=" 2">AltHold</value>
-<value code=" 3">Land even in Stabilize</value>
+<value code="1">Disabled</value>
 </values>
 </param>
 <param humanName="EKF failsafe variance threshold" name="ArduSub:FS_EKF_THRESH" documentation="Allows setting the maximum acceptable compass and velocity variance" user="Advanced">
@@ -524,7 +520,6 @@
 <param humanName="Crash check enable" name="ArduSub:FS_CRASH_CHECK" documentation="This enables automatic crash checking. When enabled the motors will disarm if a crash is detected." user="Advanced">
 <values>
 <value code="0">Disabled</value>
-<value code=" 1">Enabled</value>
 </values>
 </param>
 <param humanName="Default gain at boot" name="ArduSub:JS_GAIN_DEFAULT" documentation="Default gain at boot, must be in range [JS_GAIN_MIN , JS_GAIN_MAX]" user="Standard">
@@ -548,8 +543,21 @@
 <param humanName="Throttle gain scalar" name="ArduSub:JS_THR_GAIN" documentation="Scalar for gain on the throttle channel" user="Standard">
 <field name="Range">0.5 4.0</field>
 </param>
-<param humanName="Camera tilt mount center" name="ArduSub:CAM_TILT_CENTER" documentation="Servo PWM at camera center position" user="Standard">
+<param humanName="Camera tilt mount center" name="ArduSub:CAM_CENTER" documentation="Servo PWM at camera center position" user="Standard">
 <field name="Range">1000 2000</field>
+</param>
+<param humanName="Frame configuration" name="ArduSub:FRAME_CONFIG" documentation="Set this parameter according to your vehicle/motor configuration" user="Standard">
+<values>
+<value code="0">BlueROV1</value>
+<value code=" 1">Vectored</value>
+<value code=" 2">Vectored_6DOF</value>
+<value code=" 3">Vectored_6DOF_90</value>
+<value code=" 4">SimpleROV-3</value>
+<value code=" 5">SimpleROV-4</value>
+<value code=" 6">SimpleROV-5</value>
+<value code=" 7">Custom</value>
+</values>
+<field name="RebootRequired">True</field>
 </param>
 <param humanName="ESC Update Speed" name="ArduSub:RC_SPEED" documentation="This is the speed in Hertz that your ESCs will receive updates" user="Advanced">
 <field name="Range">50 490</field>
@@ -559,7 +567,7 @@
 <param humanName="Acro Roll and Pitch P gain" name="ArduSub:ACRO_RP_P" documentation="Converts pilot roll and pitch into a desired rate of rotation in ACRO and SPORT mode.  Higher values mean faster rate of rotation." user="Standard">
 <field name="Range">1 10</field>
 </param>
-<param humanName="Acro Yaw P gain" name="ArduSub:ACRO_YAW_P" documentation="Converts pilot yaw input into a desired rate of rotation in ACRO, Stabilize and SPORT modes.  Higher values mean faster rate of rotation." user="Standard">
+<param humanName="Acro Yaw P gain" name="ArduSub:ACRO_YAW_P" documentation="Converts pilot yaw input into a desired rate of rotation.  Higher values mean faster rate of rotation." user="Standard">
 <field name="Range">1 10</field>
 </param>
 <param humanName="Acro Balance Roll" name="ArduSub:ACRO_BAL_ROLL" documentation="rate at which roll angle returns to level in acro mode.  A higher value causes the vehicle to return to level faster." user="Advanced">
@@ -846,1004 +854,6 @@
 <value code="500">500000</value>
 <value code="921">921600</value>
 <value code="1500">1500000</value>
-</values>
-</param>
-</parameters>
-<parameters name="RC1_">
-<param humanName="RC min PWM" name="RC1_MIN" documentation="RC minimum PWM pulse width. Typically 1000 is lower limit, 1500 is neutral and 2000 is upper limit." user="Advanced">
-<field name="Range">800 2200</field>
-<field name="Increment">1</field>
-<field name="Units">pwm</field>
-</param>
-<param humanName="RC trim PWM" name="RC1_TRIM" documentation="RC trim (neutral) PWM pulse width. Typically 1000 is lower limit, 1500 is neutral and 2000 is upper limit." user="Advanced">
-<field name="Range">800 2200</field>
-<field name="Increment">1</field>
-<field name="Units">pwm</field>
-</param>
-<param humanName="RC max PWM" name="RC1_MAX" documentation="RC maximum PWM pulse width. Typically 1000 is lower limit, 1500 is neutral and 2000 is upper limit." user="Advanced">
-<field name="Range">800 2200</field>
-<field name="Increment">1</field>
-<field name="Units">pwm</field>
-</param>
-<param humanName="RC reverse" name="RC1_REV" documentation="Reverse servo operation. Set to 1 for normal (forward) operation. Set to -1 to reverse this channel." user="Advanced">
-<values>
-<value code="-1">Reversed</value>
-<value code="1">Normal</value>
-</values>
-</param>
-<param humanName="RC dead-zone" name="RC1_DZ" documentation="dead zone around trim or bottom" user="Advanced">
-<field name="Range">0 200</field>
-<field name="Units">pwm</field>
-</param>
-</parameters>
-<parameters name="RC2_">
-<param humanName="RC min PWM" name="RC2_MIN" documentation="RC minimum PWM pulse width. Typically 1000 is lower limit, 1500 is neutral and 2000 is upper limit." user="Advanced">
-<field name="Range">800 2200</field>
-<field name="Increment">1</field>
-<field name="Units">pwm</field>
-</param>
-<param humanName="RC trim PWM" name="RC2_TRIM" documentation="RC trim (neutral) PWM pulse width. Typically 1000 is lower limit, 1500 is neutral and 2000 is upper limit." user="Advanced">
-<field name="Range">800 2200</field>
-<field name="Increment">1</field>
-<field name="Units">pwm</field>
-</param>
-<param humanName="RC max PWM" name="RC2_MAX" documentation="RC maximum PWM pulse width. Typically 1000 is lower limit, 1500 is neutral and 2000 is upper limit." user="Advanced">
-<field name="Range">800 2200</field>
-<field name="Increment">1</field>
-<field name="Units">pwm</field>
-</param>
-<param humanName="RC reverse" name="RC2_REV" documentation="Reverse servo operation. Set to 1 for normal (forward) operation. Set to -1 to reverse this channel." user="Advanced">
-<values>
-<value code="-1">Reversed</value>
-<value code="1">Normal</value>
-</values>
-</param>
-<param humanName="RC dead-zone" name="RC2_DZ" documentation="dead zone around trim or bottom" user="Advanced">
-<field name="Range">0 200</field>
-<field name="Units">pwm</field>
-</param>
-</parameters>
-<parameters name="RC3_">
-<param humanName="RC min PWM" name="RC3_MIN" documentation="RC minimum PWM pulse width. Typically 1000 is lower limit, 1500 is neutral and 2000 is upper limit." user="Advanced">
-<field name="Range">800 2200</field>
-<field name="Increment">1</field>
-<field name="Units">pwm</field>
-</param>
-<param humanName="RC trim PWM" name="RC3_TRIM" documentation="RC trim (neutral) PWM pulse width. Typically 1000 is lower limit, 1500 is neutral and 2000 is upper limit." user="Advanced">
-<field name="Range">800 2200</field>
-<field name="Increment">1</field>
-<field name="Units">pwm</field>
-</param>
-<param humanName="RC max PWM" name="RC3_MAX" documentation="RC maximum PWM pulse width. Typically 1000 is lower limit, 1500 is neutral and 2000 is upper limit." user="Advanced">
-<field name="Range">800 2200</field>
-<field name="Increment">1</field>
-<field name="Units">pwm</field>
-</param>
-<param humanName="RC reverse" name="RC3_REV" documentation="Reverse servo operation. Set to 1 for normal (forward) operation. Set to -1 to reverse this channel." user="Advanced">
-<values>
-<value code="-1">Reversed</value>
-<value code="1">Normal</value>
-</values>
-</param>
-<param humanName="RC dead-zone" name="RC3_DZ" documentation="dead zone around trim or bottom" user="Advanced">
-<field name="Range">0 200</field>
-<field name="Units">pwm</field>
-</param>
-</parameters>
-<parameters name="RC4_">
-<param humanName="RC min PWM" name="RC4_MIN" documentation="RC minimum PWM pulse width. Typically 1000 is lower limit, 1500 is neutral and 2000 is upper limit." user="Advanced">
-<field name="Range">800 2200</field>
-<field name="Increment">1</field>
-<field name="Units">pwm</field>
-</param>
-<param humanName="RC trim PWM" name="RC4_TRIM" documentation="RC trim (neutral) PWM pulse width. Typically 1000 is lower limit, 1500 is neutral and 2000 is upper limit." user="Advanced">
-<field name="Range">800 2200</field>
-<field name="Increment">1</field>
-<field name="Units">pwm</field>
-</param>
-<param humanName="RC max PWM" name="RC4_MAX" documentation="RC maximum PWM pulse width. Typically 1000 is lower limit, 1500 is neutral and 2000 is upper limit." user="Advanced">
-<field name="Range">800 2200</field>
-<field name="Increment">1</field>
-<field name="Units">pwm</field>
-</param>
-<param humanName="RC reverse" name="RC4_REV" documentation="Reverse servo operation. Set to 1 for normal (forward) operation. Set to -1 to reverse this channel." user="Advanced">
-<values>
-<value code="-1">Reversed</value>
-<value code="1">Normal</value>
-</values>
-</param>
-<param humanName="RC dead-zone" name="RC4_DZ" documentation="dead zone around trim or bottom" user="Advanced">
-<field name="Range">0 200</field>
-<field name="Units">pwm</field>
-</param>
-</parameters>
-<parameters name="RC5_">
-<param humanName="RC min PWM" name="RC5_MIN" documentation="RC minimum PWM pulse width. Typically 1000 is lower limit, 1500 is neutral and 2000 is upper limit." user="Advanced">
-<field name="Range">800 2200</field>
-<field name="Increment">1</field>
-<field name="Units">pwm</field>
-</param>
-<param humanName="RC trim PWM" name="RC5_TRIM" documentation="RC trim (neutral) PWM pulse width. Typically 1000 is lower limit, 1500 is neutral and 2000 is upper limit." user="Advanced">
-<field name="Range">800 2200</field>
-<field name="Increment">1</field>
-<field name="Units">pwm</field>
-</param>
-<param humanName="RC max PWM" name="RC5_MAX" documentation="RC maximum PWM pulse width. Typically 1000 is lower limit, 1500 is neutral and 2000 is upper limit." user="Advanced">
-<field name="Range">800 2200</field>
-<field name="Increment">1</field>
-<field name="Units">pwm</field>
-</param>
-<param humanName="RC reverse" name="RC5_REV" documentation="Reverse servo operation. Set to 1 for normal (forward) operation. Set to -1 to reverse this channel." user="Advanced">
-<values>
-<value code="-1">Reversed</value>
-<value code="1">Normal</value>
-</values>
-</param>
-<param humanName="RC dead-zone" name="RC5_DZ" documentation="dead zone around trim or bottom" user="Advanced">
-<field name="Range">0 200</field>
-<field name="Units">pwm</field>
-</param>
-<param humanName="Servo out function" name="RC5_FUNCTION" documentation="Setting this to Disabled(0) will setup this output for control by auto missions or MAVLink servo set commands. any other value will enable the corresponding function" user="Standard">
-<values>
-<value code="0">Disabled</value>
-<value code="1">RCPassThru</value>
-<value code="2">Flap</value>
-<value code="3">Flap_auto</value>
-<value code="4">Aileron</value>
-<value code="6">mount_pan</value>
-<value code="7">mount_tilt</value>
-<value code="8">mount_roll</value>
-<value code="9">mount_open</value>
-<value code="10">camera_trigger</value>
-<value code="11">release</value>
-<value code="12">mount2_pan</value>
-<value code="13">mount2_tilt</value>
-<value code="14">mount2_roll</value>
-<value code="15">mount2_open</value>
-<value code="16">DifferentialSpoiler1</value>
-<value code="17">DifferentialSpoiler2</value>
-<value code="18">AileronWithInput</value>
-<value code="19">Elevator</value>
-<value code="20">ElevatorWithInput</value>
-<value code="21">Rudder</value>
-<value code="24">Flaperon1</value>
-<value code="25">Flaperon2</value>
-<value code="26">GroundSteering</value>
-<value code="27">Parachute</value>
-<value code="28">Gripper</value>
-<value code="29">LandingGear</value>
-<value code="30">EngineRunEnable</value>
-<value code="31">HeliRSC</value>
-<value code="32">HeliTailRSC</value>
-<value code="33">Motor1</value>
-<value code="34">Motor2</value>
-<value code="35">Motor3</value>
-<value code="36">Motor4</value>
-<value code="37">Motor5</value>
-<value code="38">Motor6</value>
-<value code="39">Motor7</value>
-<value code="40">Motor8</value>
-<value code="51">RCIN1</value>
-<value code="52">RCIN2</value>
-<value code="53">RCIN3</value>
-<value code="54">RCIN4</value>
-<value code="55">RCIN5</value>
-<value code="56">RCIN6</value>
-<value code="57">RCIN7</value>
-<value code="58">RCIN8</value>
-<value code="59">RCIN9</value>
-<value code="60">RCIN10</value>
-<value code="61">RCIN11</value>
-<value code="62">RCIN12</value>
-<value code="63">RCIN13</value>
-<value code="64">RCIN14</value>
-<value code="65">RCIN15</value>
-<value code="66">RCIN16</value>
-<value code="67">Ignition</value>
-<value code="68">Choke</value>
-<value code="69">Starter</value>
-<value code="70">Throttle</value>
-</values>
-</param>
-</parameters>
-<parameters name="RC6_">
-<param humanName="RC min PWM" name="RC6_MIN" documentation="RC minimum PWM pulse width. Typically 1000 is lower limit, 1500 is neutral and 2000 is upper limit." user="Advanced">
-<field name="Range">800 2200</field>
-<field name="Increment">1</field>
-<field name="Units">pwm</field>
-</param>
-<param humanName="RC trim PWM" name="RC6_TRIM" documentation="RC trim (neutral) PWM pulse width. Typically 1000 is lower limit, 1500 is neutral and 2000 is upper limit." user="Advanced">
-<field name="Range">800 2200</field>
-<field name="Increment">1</field>
-<field name="Units">pwm</field>
-</param>
-<param humanName="RC max PWM" name="RC6_MAX" documentation="RC maximum PWM pulse width. Typically 1000 is lower limit, 1500 is neutral and 2000 is upper limit." user="Advanced">
-<field name="Range">800 2200</field>
-<field name="Increment">1</field>
-<field name="Units">pwm</field>
-</param>
-<param humanName="RC reverse" name="RC6_REV" documentation="Reverse servo operation. Set to 1 for normal (forward) operation. Set to -1 to reverse this channel." user="Advanced">
-<values>
-<value code="-1">Reversed</value>
-<value code="1">Normal</value>
-</values>
-</param>
-<param humanName="RC dead-zone" name="RC6_DZ" documentation="dead zone around trim or bottom" user="Advanced">
-<field name="Range">0 200</field>
-<field name="Units">pwm</field>
-</param>
-<param humanName="Servo out function" name="RC6_FUNCTION" documentation="Setting this to Disabled(0) will setup this output for control by auto missions or MAVLink servo set commands. any other value will enable the corresponding function" user="Standard">
-<values>
-<value code="0">Disabled</value>
-<value code="1">RCPassThru</value>
-<value code="2">Flap</value>
-<value code="3">Flap_auto</value>
-<value code="4">Aileron</value>
-<value code="6">mount_pan</value>
-<value code="7">mount_tilt</value>
-<value code="8">mount_roll</value>
-<value code="9">mount_open</value>
-<value code="10">camera_trigger</value>
-<value code="11">release</value>
-<value code="12">mount2_pan</value>
-<value code="13">mount2_tilt</value>
-<value code="14">mount2_roll</value>
-<value code="15">mount2_open</value>
-<value code="16">DifferentialSpoiler1</value>
-<value code="17">DifferentialSpoiler2</value>
-<value code="18">AileronWithInput</value>
-<value code="19">Elevator</value>
-<value code="20">ElevatorWithInput</value>
-<value code="21">Rudder</value>
-<value code="24">Flaperon1</value>
-<value code="25">Flaperon2</value>
-<value code="26">GroundSteering</value>
-<value code="27">Parachute</value>
-<value code="28">Gripper</value>
-<value code="29">LandingGear</value>
-<value code="30">EngineRunEnable</value>
-<value code="31">HeliRSC</value>
-<value code="32">HeliTailRSC</value>
-<value code="33">Motor1</value>
-<value code="34">Motor2</value>
-<value code="35">Motor3</value>
-<value code="36">Motor4</value>
-<value code="37">Motor5</value>
-<value code="38">Motor6</value>
-<value code="39">Motor7</value>
-<value code="40">Motor8</value>
-<value code="51">RCIN1</value>
-<value code="52">RCIN2</value>
-<value code="53">RCIN3</value>
-<value code="54">RCIN4</value>
-<value code="55">RCIN5</value>
-<value code="56">RCIN6</value>
-<value code="57">RCIN7</value>
-<value code="58">RCIN8</value>
-<value code="59">RCIN9</value>
-<value code="60">RCIN10</value>
-<value code="61">RCIN11</value>
-<value code="62">RCIN12</value>
-<value code="63">RCIN13</value>
-<value code="64">RCIN14</value>
-<value code="65">RCIN15</value>
-<value code="66">RCIN16</value>
-<value code="67">Ignition</value>
-<value code="68">Choke</value>
-<value code="69">Starter</value>
-<value code="70">Throttle</value>
-</values>
-</param>
-</parameters>
-<parameters name="RC7_">
-<param humanName="RC min PWM" name="RC7_MIN" documentation="RC minimum PWM pulse width. Typically 1000 is lower limit, 1500 is neutral and 2000 is upper limit." user="Advanced">
-<field name="Range">800 2200</field>
-<field name="Increment">1</field>
-<field name="Units">pwm</field>
-</param>
-<param humanName="RC trim PWM" name="RC7_TRIM" documentation="RC trim (neutral) PWM pulse width. Typically 1000 is lower limit, 1500 is neutral and 2000 is upper limit." user="Advanced">
-<field name="Range">800 2200</field>
-<field name="Increment">1</field>
-<field name="Units">pwm</field>
-</param>
-<param humanName="RC max PWM" name="RC7_MAX" documentation="RC maximum PWM pulse width. Typically 1000 is lower limit, 1500 is neutral and 2000 is upper limit." user="Advanced">
-<field name="Range">800 2200</field>
-<field name="Increment">1</field>
-<field name="Units">pwm</field>
-</param>
-<param humanName="RC reverse" name="RC7_REV" documentation="Reverse servo operation. Set to 1 for normal (forward) operation. Set to -1 to reverse this channel." user="Advanced">
-<values>
-<value code="-1">Reversed</value>
-<value code="1">Normal</value>
-</values>
-</param>
-<param humanName="RC dead-zone" name="RC7_DZ" documentation="dead zone around trim or bottom" user="Advanced">
-<field name="Range">0 200</field>
-<field name="Units">pwm</field>
-</param>
-<param humanName="Servo out function" name="RC7_FUNCTION" documentation="Setting this to Disabled(0) will setup this output for control by auto missions or MAVLink servo set commands. any other value will enable the corresponding function" user="Standard">
-<values>
-<value code="0">Disabled</value>
-<value code="1">RCPassThru</value>
-<value code="2">Flap</value>
-<value code="3">Flap_auto</value>
-<value code="4">Aileron</value>
-<value code="6">mount_pan</value>
-<value code="7">mount_tilt</value>
-<value code="8">mount_roll</value>
-<value code="9">mount_open</value>
-<value code="10">camera_trigger</value>
-<value code="11">release</value>
-<value code="12">mount2_pan</value>
-<value code="13">mount2_tilt</value>
-<value code="14">mount2_roll</value>
-<value code="15">mount2_open</value>
-<value code="16">DifferentialSpoiler1</value>
-<value code="17">DifferentialSpoiler2</value>
-<value code="18">AileronWithInput</value>
-<value code="19">Elevator</value>
-<value code="20">ElevatorWithInput</value>
-<value code="21">Rudder</value>
-<value code="24">Flaperon1</value>
-<value code="25">Flaperon2</value>
-<value code="26">GroundSteering</value>
-<value code="27">Parachute</value>
-<value code="28">Gripper</value>
-<value code="29">LandingGear</value>
-<value code="30">EngineRunEnable</value>
-<value code="31">HeliRSC</value>
-<value code="32">HeliTailRSC</value>
-<value code="33">Motor1</value>
-<value code="34">Motor2</value>
-<value code="35">Motor3</value>
-<value code="36">Motor4</value>
-<value code="37">Motor5</value>
-<value code="38">Motor6</value>
-<value code="39">Motor7</value>
-<value code="40">Motor8</value>
-<value code="51">RCIN1</value>
-<value code="52">RCIN2</value>
-<value code="53">RCIN3</value>
-<value code="54">RCIN4</value>
-<value code="55">RCIN5</value>
-<value code="56">RCIN6</value>
-<value code="57">RCIN7</value>
-<value code="58">RCIN8</value>
-<value code="59">RCIN9</value>
-<value code="60">RCIN10</value>
-<value code="61">RCIN11</value>
-<value code="62">RCIN12</value>
-<value code="63">RCIN13</value>
-<value code="64">RCIN14</value>
-<value code="65">RCIN15</value>
-<value code="66">RCIN16</value>
-<value code="67">Ignition</value>
-<value code="68">Choke</value>
-<value code="69">Starter</value>
-<value code="70">Throttle</value>
-</values>
-</param>
-</parameters>
-<parameters name="RC8_">
-<param humanName="RC min PWM" name="RC8_MIN" documentation="RC minimum PWM pulse width. Typically 1000 is lower limit, 1500 is neutral and 2000 is upper limit." user="Advanced">
-<field name="Range">800 2200</field>
-<field name="Increment">1</field>
-<field name="Units">pwm</field>
-</param>
-<param humanName="RC trim PWM" name="RC8_TRIM" documentation="RC trim (neutral) PWM pulse width. Typically 1000 is lower limit, 1500 is neutral and 2000 is upper limit." user="Advanced">
-<field name="Range">800 2200</field>
-<field name="Increment">1</field>
-<field name="Units">pwm</field>
-</param>
-<param humanName="RC max PWM" name="RC8_MAX" documentation="RC maximum PWM pulse width. Typically 1000 is lower limit, 1500 is neutral and 2000 is upper limit." user="Advanced">
-<field name="Range">800 2200</field>
-<field name="Increment">1</field>
-<field name="Units">pwm</field>
-</param>
-<param humanName="RC reverse" name="RC8_REV" documentation="Reverse servo operation. Set to 1 for normal (forward) operation. Set to -1 to reverse this channel." user="Advanced">
-<values>
-<value code="-1">Reversed</value>
-<value code="1">Normal</value>
-</values>
-</param>
-<param humanName="RC dead-zone" name="RC8_DZ" documentation="dead zone around trim or bottom" user="Advanced">
-<field name="Range">0 200</field>
-<field name="Units">pwm</field>
-</param>
-<param humanName="Servo out function" name="RC8_FUNCTION" documentation="Setting this to Disabled(0) will setup this output for control by auto missions or MAVLink servo set commands. any other value will enable the corresponding function" user="Standard">
-<values>
-<value code="0">Disabled</value>
-<value code="1">RCPassThru</value>
-<value code="2">Flap</value>
-<value code="3">Flap_auto</value>
-<value code="4">Aileron</value>
-<value code="6">mount_pan</value>
-<value code="7">mount_tilt</value>
-<value code="8">mount_roll</value>
-<value code="9">mount_open</value>
-<value code="10">camera_trigger</value>
-<value code="11">release</value>
-<value code="12">mount2_pan</value>
-<value code="13">mount2_tilt</value>
-<value code="14">mount2_roll</value>
-<value code="15">mount2_open</value>
-<value code="16">DifferentialSpoiler1</value>
-<value code="17">DifferentialSpoiler2</value>
-<value code="18">AileronWithInput</value>
-<value code="19">Elevator</value>
-<value code="20">ElevatorWithInput</value>
-<value code="21">Rudder</value>
-<value code="24">Flaperon1</value>
-<value code="25">Flaperon2</value>
-<value code="26">GroundSteering</value>
-<value code="27">Parachute</value>
-<value code="28">Gripper</value>
-<value code="29">LandingGear</value>
-<value code="30">EngineRunEnable</value>
-<value code="31">HeliRSC</value>
-<value code="32">HeliTailRSC</value>
-<value code="33">Motor1</value>
-<value code="34">Motor2</value>
-<value code="35">Motor3</value>
-<value code="36">Motor4</value>
-<value code="37">Motor5</value>
-<value code="38">Motor6</value>
-<value code="39">Motor7</value>
-<value code="40">Motor8</value>
-<value code="51">RCIN1</value>
-<value code="52">RCIN2</value>
-<value code="53">RCIN3</value>
-<value code="54">RCIN4</value>
-<value code="55">RCIN5</value>
-<value code="56">RCIN6</value>
-<value code="57">RCIN7</value>
-<value code="58">RCIN8</value>
-<value code="59">RCIN9</value>
-<value code="60">RCIN10</value>
-<value code="61">RCIN11</value>
-<value code="62">RCIN12</value>
-<value code="63">RCIN13</value>
-<value code="64">RCIN14</value>
-<value code="65">RCIN15</value>
-<value code="66">RCIN16</value>
-<value code="67">Ignition</value>
-<value code="68">Choke</value>
-<value code="69">Starter</value>
-<value code="70">Throttle</value>
-</values>
-</param>
-</parameters>
-<parameters name="RC9_">
-<param humanName="RC min PWM" name="RC9_MIN" documentation="RC minimum PWM pulse width. Typically 1000 is lower limit, 1500 is neutral and 2000 is upper limit." user="Advanced">
-<field name="Range">800 2200</field>
-<field name="Increment">1</field>
-<field name="Units">pwm</field>
-</param>
-<param humanName="RC trim PWM" name="RC9_TRIM" documentation="RC trim (neutral) PWM pulse width. Typically 1000 is lower limit, 1500 is neutral and 2000 is upper limit." user="Advanced">
-<field name="Range">800 2200</field>
-<field name="Increment">1</field>
-<field name="Units">pwm</field>
-</param>
-<param humanName="RC max PWM" name="RC9_MAX" documentation="RC maximum PWM pulse width. Typically 1000 is lower limit, 1500 is neutral and 2000 is upper limit." user="Advanced">
-<field name="Range">800 2200</field>
-<field name="Increment">1</field>
-<field name="Units">pwm</field>
-</param>
-<param humanName="RC reverse" name="RC9_REV" documentation="Reverse servo operation. Set to 1 for normal (forward) operation. Set to -1 to reverse this channel." user="Advanced">
-<values>
-<value code="-1">Reversed</value>
-<value code="1">Normal</value>
-</values>
-</param>
-<param humanName="RC dead-zone" name="RC9_DZ" documentation="dead zone around trim or bottom" user="Advanced">
-<field name="Range">0 200</field>
-<field name="Units">pwm</field>
-</param>
-<param humanName="Servo out function" name="RC9_FUNCTION" documentation="Setting this to Disabled(0) will setup this output for control by auto missions or MAVLink servo set commands. any other value will enable the corresponding function" user="Standard">
-<values>
-<value code="0">Disabled</value>
-<value code="1">RCPassThru</value>
-<value code="2">Flap</value>
-<value code="3">Flap_auto</value>
-<value code="4">Aileron</value>
-<value code="6">mount_pan</value>
-<value code="7">mount_tilt</value>
-<value code="8">mount_roll</value>
-<value code="9">mount_open</value>
-<value code="10">camera_trigger</value>
-<value code="11">release</value>
-<value code="12">mount2_pan</value>
-<value code="13">mount2_tilt</value>
-<value code="14">mount2_roll</value>
-<value code="15">mount2_open</value>
-<value code="16">DifferentialSpoiler1</value>
-<value code="17">DifferentialSpoiler2</value>
-<value code="18">AileronWithInput</value>
-<value code="19">Elevator</value>
-<value code="20">ElevatorWithInput</value>
-<value code="21">Rudder</value>
-<value code="24">Flaperon1</value>
-<value code="25">Flaperon2</value>
-<value code="26">GroundSteering</value>
-<value code="27">Parachute</value>
-<value code="28">Gripper</value>
-<value code="29">LandingGear</value>
-<value code="30">EngineRunEnable</value>
-<value code="31">HeliRSC</value>
-<value code="32">HeliTailRSC</value>
-<value code="33">Motor1</value>
-<value code="34">Motor2</value>
-<value code="35">Motor3</value>
-<value code="36">Motor4</value>
-<value code="37">Motor5</value>
-<value code="38">Motor6</value>
-<value code="39">Motor7</value>
-<value code="40">Motor8</value>
-<value code="51">RCIN1</value>
-<value code="52">RCIN2</value>
-<value code="53">RCIN3</value>
-<value code="54">RCIN4</value>
-<value code="55">RCIN5</value>
-<value code="56">RCIN6</value>
-<value code="57">RCIN7</value>
-<value code="58">RCIN8</value>
-<value code="59">RCIN9</value>
-<value code="60">RCIN10</value>
-<value code="61">RCIN11</value>
-<value code="62">RCIN12</value>
-<value code="63">RCIN13</value>
-<value code="64">RCIN14</value>
-<value code="65">RCIN15</value>
-<value code="66">RCIN16</value>
-<value code="67">Ignition</value>
-<value code="68">Choke</value>
-<value code="69">Starter</value>
-<value code="70">Throttle</value>
-</values>
-</param>
-</parameters>
-<parameters name="RC10_">
-<param humanName="RC min PWM" name="RC10_MIN" documentation="RC minimum PWM pulse width. Typically 1000 is lower limit, 1500 is neutral and 2000 is upper limit." user="Advanced">
-<field name="Range">800 2200</field>
-<field name="Increment">1</field>
-<field name="Units">pwm</field>
-</param>
-<param humanName="RC trim PWM" name="RC10_TRIM" documentation="RC trim (neutral) PWM pulse width. Typically 1000 is lower limit, 1500 is neutral and 2000 is upper limit." user="Advanced">
-<field name="Range">800 2200</field>
-<field name="Increment">1</field>
-<field name="Units">pwm</field>
-</param>
-<param humanName="RC max PWM" name="RC10_MAX" documentation="RC maximum PWM pulse width. Typically 1000 is lower limit, 1500 is neutral and 2000 is upper limit." user="Advanced">
-<field name="Range">800 2200</field>
-<field name="Increment">1</field>
-<field name="Units">pwm</field>
-</param>
-<param humanName="RC reverse" name="RC10_REV" documentation="Reverse servo operation. Set to 1 for normal (forward) operation. Set to -1 to reverse this channel." user="Advanced">
-<values>
-<value code="-1">Reversed</value>
-<value code="1">Normal</value>
-</values>
-</param>
-<param humanName="RC dead-zone" name="RC10_DZ" documentation="dead zone around trim or bottom" user="Advanced">
-<field name="Range">0 200</field>
-<field name="Units">pwm</field>
-</param>
-<param humanName="Servo out function" name="RC10_FUNCTION" documentation="Setting this to Disabled(0) will setup this output for control by auto missions or MAVLink servo set commands. any other value will enable the corresponding function" user="Standard">
-<values>
-<value code="0">Disabled</value>
-<value code="1">RCPassThru</value>
-<value code="2">Flap</value>
-<value code="3">Flap_auto</value>
-<value code="4">Aileron</value>
-<value code="6">mount_pan</value>
-<value code="7">mount_tilt</value>
-<value code="8">mount_roll</value>
-<value code="9">mount_open</value>
-<value code="10">camera_trigger</value>
-<value code="11">release</value>
-<value code="12">mount2_pan</value>
-<value code="13">mount2_tilt</value>
-<value code="14">mount2_roll</value>
-<value code="15">mount2_open</value>
-<value code="16">DifferentialSpoiler1</value>
-<value code="17">DifferentialSpoiler2</value>
-<value code="18">AileronWithInput</value>
-<value code="19">Elevator</value>
-<value code="20">ElevatorWithInput</value>
-<value code="21">Rudder</value>
-<value code="24">Flaperon1</value>
-<value code="25">Flaperon2</value>
-<value code="26">GroundSteering</value>
-<value code="27">Parachute</value>
-<value code="28">Gripper</value>
-<value code="29">LandingGear</value>
-<value code="30">EngineRunEnable</value>
-<value code="31">HeliRSC</value>
-<value code="32">HeliTailRSC</value>
-<value code="33">Motor1</value>
-<value code="34">Motor2</value>
-<value code="35">Motor3</value>
-<value code="36">Motor4</value>
-<value code="37">Motor5</value>
-<value code="38">Motor6</value>
-<value code="39">Motor7</value>
-<value code="40">Motor8</value>
-<value code="51">RCIN1</value>
-<value code="52">RCIN2</value>
-<value code="53">RCIN3</value>
-<value code="54">RCIN4</value>
-<value code="55">RCIN5</value>
-<value code="56">RCIN6</value>
-<value code="57">RCIN7</value>
-<value code="58">RCIN8</value>
-<value code="59">RCIN9</value>
-<value code="60">RCIN10</value>
-<value code="61">RCIN11</value>
-<value code="62">RCIN12</value>
-<value code="63">RCIN13</value>
-<value code="64">RCIN14</value>
-<value code="65">RCIN15</value>
-<value code="66">RCIN16</value>
-<value code="67">Ignition</value>
-<value code="68">Choke</value>
-<value code="69">Starter</value>
-<value code="70">Throttle</value>
-</values>
-</param>
-</parameters>
-<parameters name="RC11_">
-<param humanName="RC min PWM" name="RC11_MIN" documentation="RC minimum PWM pulse width. Typically 1000 is lower limit, 1500 is neutral and 2000 is upper limit." user="Advanced">
-<field name="Range">800 2200</field>
-<field name="Increment">1</field>
-<field name="Units">pwm</field>
-</param>
-<param humanName="RC trim PWM" name="RC11_TRIM" documentation="RC trim (neutral) PWM pulse width. Typically 1000 is lower limit, 1500 is neutral and 2000 is upper limit." user="Advanced">
-<field name="Range">800 2200</field>
-<field name="Increment">1</field>
-<field name="Units">pwm</field>
-</param>
-<param humanName="RC max PWM" name="RC11_MAX" documentation="RC maximum PWM pulse width. Typically 1000 is lower limit, 1500 is neutral and 2000 is upper limit." user="Advanced">
-<field name="Range">800 2200</field>
-<field name="Increment">1</field>
-<field name="Units">pwm</field>
-</param>
-<param humanName="RC reverse" name="RC11_REV" documentation="Reverse servo operation. Set to 1 for normal (forward) operation. Set to -1 to reverse this channel." user="Advanced">
-<values>
-<value code="-1">Reversed</value>
-<value code="1">Normal</value>
-</values>
-</param>
-<param humanName="RC dead-zone" name="RC11_DZ" documentation="dead zone around trim or bottom" user="Advanced">
-<field name="Range">0 200</field>
-<field name="Units">pwm</field>
-</param>
-<param humanName="Servo out function" name="RC11_FUNCTION" documentation="Setting this to Disabled(0) will setup this output for control by auto missions or MAVLink servo set commands. any other value will enable the corresponding function" user="Standard">
-<values>
-<value code="0">Disabled</value>
-<value code="1">RCPassThru</value>
-<value code="2">Flap</value>
-<value code="3">Flap_auto</value>
-<value code="4">Aileron</value>
-<value code="6">mount_pan</value>
-<value code="7">mount_tilt</value>
-<value code="8">mount_roll</value>
-<value code="9">mount_open</value>
-<value code="10">camera_trigger</value>
-<value code="11">release</value>
-<value code="12">mount2_pan</value>
-<value code="13">mount2_tilt</value>
-<value code="14">mount2_roll</value>
-<value code="15">mount2_open</value>
-<value code="16">DifferentialSpoiler1</value>
-<value code="17">DifferentialSpoiler2</value>
-<value code="18">AileronWithInput</value>
-<value code="19">Elevator</value>
-<value code="20">ElevatorWithInput</value>
-<value code="21">Rudder</value>
-<value code="24">Flaperon1</value>
-<value code="25">Flaperon2</value>
-<value code="26">GroundSteering</value>
-<value code="27">Parachute</value>
-<value code="28">Gripper</value>
-<value code="29">LandingGear</value>
-<value code="30">EngineRunEnable</value>
-<value code="31">HeliRSC</value>
-<value code="32">HeliTailRSC</value>
-<value code="33">Motor1</value>
-<value code="34">Motor2</value>
-<value code="35">Motor3</value>
-<value code="36">Motor4</value>
-<value code="37">Motor5</value>
-<value code="38">Motor6</value>
-<value code="39">Motor7</value>
-<value code="40">Motor8</value>
-<value code="51">RCIN1</value>
-<value code="52">RCIN2</value>
-<value code="53">RCIN3</value>
-<value code="54">RCIN4</value>
-<value code="55">RCIN5</value>
-<value code="56">RCIN6</value>
-<value code="57">RCIN7</value>
-<value code="58">RCIN8</value>
-<value code="59">RCIN9</value>
-<value code="60">RCIN10</value>
-<value code="61">RCIN11</value>
-<value code="62">RCIN12</value>
-<value code="63">RCIN13</value>
-<value code="64">RCIN14</value>
-<value code="65">RCIN15</value>
-<value code="66">RCIN16</value>
-<value code="67">Ignition</value>
-<value code="68">Choke</value>
-<value code="69">Starter</value>
-<value code="70">Throttle</value>
-</values>
-</param>
-</parameters>
-<parameters name="RC12_">
-<param humanName="RC min PWM" name="RC12_MIN" documentation="RC minimum PWM pulse width. Typically 1000 is lower limit, 1500 is neutral and 2000 is upper limit." user="Advanced">
-<field name="Range">800 2200</field>
-<field name="Increment">1</field>
-<field name="Units">pwm</field>
-</param>
-<param humanName="RC trim PWM" name="RC12_TRIM" documentation="RC trim (neutral) PWM pulse width. Typically 1000 is lower limit, 1500 is neutral and 2000 is upper limit." user="Advanced">
-<field name="Range">800 2200</field>
-<field name="Increment">1</field>
-<field name="Units">pwm</field>
-</param>
-<param humanName="RC max PWM" name="RC12_MAX" documentation="RC maximum PWM pulse width. Typically 1000 is lower limit, 1500 is neutral and 2000 is upper limit." user="Advanced">
-<field name="Range">800 2200</field>
-<field name="Increment">1</field>
-<field name="Units">pwm</field>
-</param>
-<param humanName="RC reverse" name="RC12_REV" documentation="Reverse servo operation. Set to 1 for normal (forward) operation. Set to -1 to reverse this channel." user="Advanced">
-<values>
-<value code="-1">Reversed</value>
-<value code="1">Normal</value>
-</values>
-</param>
-<param humanName="RC dead-zone" name="RC12_DZ" documentation="dead zone around trim or bottom" user="Advanced">
-<field name="Range">0 200</field>
-<field name="Units">pwm</field>
-</param>
-<param humanName="Servo out function" name="RC12_FUNCTION" documentation="Setting this to Disabled(0) will setup this output for control by auto missions or MAVLink servo set commands. any other value will enable the corresponding function" user="Standard">
-<values>
-<value code="0">Disabled</value>
-<value code="1">RCPassThru</value>
-<value code="2">Flap</value>
-<value code="3">Flap_auto</value>
-<value code="4">Aileron</value>
-<value code="6">mount_pan</value>
-<value code="7">mount_tilt</value>
-<value code="8">mount_roll</value>
-<value code="9">mount_open</value>
-<value code="10">camera_trigger</value>
-<value code="11">release</value>
-<value code="12">mount2_pan</value>
-<value code="13">mount2_tilt</value>
-<value code="14">mount2_roll</value>
-<value code="15">mount2_open</value>
-<value code="16">DifferentialSpoiler1</value>
-<value code="17">DifferentialSpoiler2</value>
-<value code="18">AileronWithInput</value>
-<value code="19">Elevator</value>
-<value code="20">ElevatorWithInput</value>
-<value code="21">Rudder</value>
-<value code="24">Flaperon1</value>
-<value code="25">Flaperon2</value>
-<value code="26">GroundSteering</value>
-<value code="27">Parachute</value>
-<value code="28">Gripper</value>
-<value code="29">LandingGear</value>
-<value code="30">EngineRunEnable</value>
-<value code="31">HeliRSC</value>
-<value code="32">HeliTailRSC</value>
-<value code="33">Motor1</value>
-<value code="34">Motor2</value>
-<value code="35">Motor3</value>
-<value code="36">Motor4</value>
-<value code="37">Motor5</value>
-<value code="38">Motor6</value>
-<value code="39">Motor7</value>
-<value code="40">Motor8</value>
-<value code="51">RCIN1</value>
-<value code="52">RCIN2</value>
-<value code="53">RCIN3</value>
-<value code="54">RCIN4</value>
-<value code="55">RCIN5</value>
-<value code="56">RCIN6</value>
-<value code="57">RCIN7</value>
-<value code="58">RCIN8</value>
-<value code="59">RCIN9</value>
-<value code="60">RCIN10</value>
-<value code="61">RCIN11</value>
-<value code="62">RCIN12</value>
-<value code="63">RCIN13</value>
-<value code="64">RCIN14</value>
-<value code="65">RCIN15</value>
-<value code="66">RCIN16</value>
-<value code="67">Ignition</value>
-<value code="68">Choke</value>
-<value code="69">Starter</value>
-<value code="70">Throttle</value>
-</values>
-</param>
-</parameters>
-<parameters name="RC13_">
-<param humanName="RC min PWM" name="RC13_MIN" documentation="RC minimum PWM pulse width. Typically 1000 is lower limit, 1500 is neutral and 2000 is upper limit." user="Advanced">
-<field name="Range">800 2200</field>
-<field name="Increment">1</field>
-<field name="Units">pwm</field>
-</param>
-<param humanName="RC trim PWM" name="RC13_TRIM" documentation="RC trim (neutral) PWM pulse width. Typically 1000 is lower limit, 1500 is neutral and 2000 is upper limit." user="Advanced">
-<field name="Range">800 2200</field>
-<field name="Increment">1</field>
-<field name="Units">pwm</field>
-</param>
-<param humanName="RC max PWM" name="RC13_MAX" documentation="RC maximum PWM pulse width. Typically 1000 is lower limit, 1500 is neutral and 2000 is upper limit." user="Advanced">
-<field name="Range">800 2200</field>
-<field name="Increment">1</field>
-<field name="Units">pwm</field>
-</param>
-<param humanName="RC reverse" name="RC13_REV" documentation="Reverse servo operation. Set to 1 for normal (forward) operation. Set to -1 to reverse this channel." user="Advanced">
-<values>
-<value code="-1">Reversed</value>
-<value code="1">Normal</value>
-</values>
-</param>
-<param humanName="RC dead-zone" name="RC13_DZ" documentation="dead zone around trim or bottom" user="Advanced">
-<field name="Range">0 200</field>
-<field name="Units">pwm</field>
-</param>
-<param humanName="Servo out function" name="RC13_FUNCTION" documentation="Setting this to Disabled(0) will setup this output for control by auto missions or MAVLink servo set commands. any other value will enable the corresponding function" user="Standard">
-<values>
-<value code="0">Disabled</value>
-<value code="1">RCPassThru</value>
-<value code="2">Flap</value>
-<value code="3">Flap_auto</value>
-<value code="4">Aileron</value>
-<value code="6">mount_pan</value>
-<value code="7">mount_tilt</value>
-<value code="8">mount_roll</value>
-<value code="9">mount_open</value>
-<value code="10">camera_trigger</value>
-<value code="11">release</value>
-<value code="12">mount2_pan</value>
-<value code="13">mount2_tilt</value>
-<value code="14">mount2_roll</value>
-<value code="15">mount2_open</value>
-<value code="16">DifferentialSpoiler1</value>
-<value code="17">DifferentialSpoiler2</value>
-<value code="18">AileronWithInput</value>
-<value code="19">Elevator</value>
-<value code="20">ElevatorWithInput</value>
-<value code="21">Rudder</value>
-<value code="24">Flaperon1</value>
-<value code="25">Flaperon2</value>
-<value code="26">GroundSteering</value>
-<value code="27">Parachute</value>
-<value code="28">Gripper</value>
-<value code="29">LandingGear</value>
-<value code="30">EngineRunEnable</value>
-<value code="31">HeliRSC</value>
-<value code="32">HeliTailRSC</value>
-<value code="33">Motor1</value>
-<value code="34">Motor2</value>
-<value code="35">Motor3</value>
-<value code="36">Motor4</value>
-<value code="37">Motor5</value>
-<value code="38">Motor6</value>
-<value code="39">Motor7</value>
-<value code="40">Motor8</value>
-<value code="51">RCIN1</value>
-<value code="52">RCIN2</value>
-<value code="53">RCIN3</value>
-<value code="54">RCIN4</value>
-<value code="55">RCIN5</value>
-<value code="56">RCIN6</value>
-<value code="57">RCIN7</value>
-<value code="58">RCIN8</value>
-<value code="59">RCIN9</value>
-<value code="60">RCIN10</value>
-<value code="61">RCIN11</value>
-<value code="62">RCIN12</value>
-<value code="63">RCIN13</value>
-<value code="64">RCIN14</value>
-<value code="65">RCIN15</value>
-<value code="66">RCIN16</value>
-<value code="67">Ignition</value>
-<value code="68">Choke</value>
-<value code="69">Starter</value>
-<value code="70">Throttle</value>
-</values>
-</param>
-</parameters>
-<parameters name="RC14_">
-<param humanName="RC min PWM" name="RC14_MIN" documentation="RC minimum PWM pulse width. Typically 1000 is lower limit, 1500 is neutral and 2000 is upper limit." user="Advanced">
-<field name="Range">800 2200</field>
-<field name="Increment">1</field>
-<field name="Units">pwm</field>
-</param>
-<param humanName="RC trim PWM" name="RC14_TRIM" documentation="RC trim (neutral) PWM pulse width. Typically 1000 is lower limit, 1500 is neutral and 2000 is upper limit." user="Advanced">
-<field name="Range">800 2200</field>
-<field name="Increment">1</field>
-<field name="Units">pwm</field>
-</param>
-<param humanName="RC max PWM" name="RC14_MAX" documentation="RC maximum PWM pulse width. Typically 1000 is lower limit, 1500 is neutral and 2000 is upper limit." user="Advanced">
-<field name="Range">800 2200</field>
-<field name="Increment">1</field>
-<field name="Units">pwm</field>
-</param>
-<param humanName="RC reverse" name="RC14_REV" documentation="Reverse servo operation. Set to 1 for normal (forward) operation. Set to -1 to reverse this channel." user="Advanced">
-<values>
-<value code="-1">Reversed</value>
-<value code="1">Normal</value>
-</values>
-</param>
-<param humanName="RC dead-zone" name="RC14_DZ" documentation="dead zone around trim or bottom" user="Advanced">
-<field name="Range">0 200</field>
-<field name="Units">pwm</field>
-</param>
-<param humanName="Servo out function" name="RC14_FUNCTION" documentation="Setting this to Disabled(0) will setup this output for control by auto missions or MAVLink servo set commands. any other value will enable the corresponding function" user="Standard">
-<values>
-<value code="0">Disabled</value>
-<value code="1">RCPassThru</value>
-<value code="2">Flap</value>
-<value code="3">Flap_auto</value>
-<value code="4">Aileron</value>
-<value code="6">mount_pan</value>
-<value code="7">mount_tilt</value>
-<value code="8">mount_roll</value>
-<value code="9">mount_open</value>
-<value code="10">camera_trigger</value>
-<value code="11">release</value>
-<value code="12">mount2_pan</value>
-<value code="13">mount2_tilt</value>
-<value code="14">mount2_roll</value>
-<value code="15">mount2_open</value>
-<value code="16">DifferentialSpoiler1</value>
-<value code="17">DifferentialSpoiler2</value>
-<value code="18">AileronWithInput</value>
-<value code="19">Elevator</value>
-<value code="20">ElevatorWithInput</value>
-<value code="21">Rudder</value>
-<value code="24">Flaperon1</value>
-<value code="25">Flaperon2</value>
-<value code="26">GroundSteering</value>
-<value code="27">Parachute</value>
-<value code="28">Gripper</value>
-<value code="29">LandingGear</value>
-<value code="30">EngineRunEnable</value>
-<value code="31">HeliRSC</value>
-<value code="32">HeliTailRSC</value>
-<value code="33">Motor1</value>
-<value code="34">Motor2</value>
-<value code="35">Motor3</value>
-<value code="36">Motor4</value>
-<value code="37">Motor5</value>
-<value code="38">Motor6</value>
-<value code="39">Motor7</value>
-<value code="40">Motor8</value>
-<value code="51">RCIN1</value>
-<value code="52">RCIN2</value>
-<value code="53">RCIN3</value>
-<value code="54">RCIN4</value>
-<value code="55">RCIN5</value>
-<value code="56">RCIN6</value>
-<value code="57">RCIN7</value>
-<value code="58">RCIN8</value>
-<value code="59">RCIN9</value>
-<value code="60">RCIN10</value>
-<value code="61">RCIN11</value>
-<value code="62">RCIN12</value>
-<value code="63">RCIN13</value>
-<value code="64">RCIN14</value>
-<value code="65">RCIN15</value>
-<value code="66">RCIN16</value>
-<value code="67">Ignition</value>
-<value code="68">Choke</value>
-<value code="69">Starter</value>
-<value code="70">Throttle</value>
 </values>
 </param>
 </parameters>
@@ -4123,7 +3133,7 @@
 </parameters>
 <parameters name="WPNAV_">
 <param humanName="Waypoint Horizontal Speed Target" name="WPNAV_SPEED" documentation="Defines the speed in cm/s which the aircraft will attempt to maintain horizontally during a WP mission" user="Standard">
-<field name="Range">0 2000</field>
+<field name="Range">20 2000</field>
 <field name="Increment">50</field>
 <field name="Units">cm/s</field>
 </param>
@@ -4282,7 +3292,7 @@
 <field name="Range">0.0 0.02</field>
 <field name="Increment">0.001</field>
 </param>
-<param humanName="Roll axis rate conroller input frequency in Hz" name="ATC_RAT_RLL_FILT" documentation="Roll axis rate conroller input frequency in Hz" user="Standard">
+<param humanName="Roll axis rate controller input frequency in Hz" name="ATC_RAT_RLL_FILT" documentation="Roll axis rate controller input frequency in Hz" user="Standard">
 <field name="Range">1 100</field>
 <field name="Increment">1</field>
 <field name="Units">Hz</field>
@@ -4304,7 +3314,7 @@
 <field name="Range">0.0 0.02</field>
 <field name="Increment">0.001</field>
 </param>
-<param humanName="Pitch axis rate conroller input frequency in Hz" name="ATC_RAT_PIT_FILT" documentation="Pitch axis rate conroller input frequency in Hz" user="Standard">
+<param humanName="Pitch axis rate controller input frequency in Hz" name="ATC_RAT_PIT_FILT" documentation="Pitch axis rate controller input frequency in Hz" user="Standard">
 <field name="Range">1 100</field>
 <field name="Increment">1</field>
 <field name="Units">Hz</field>
@@ -4326,7 +3336,7 @@
 <field name="Range">0.000 0.02</field>
 <field name="Increment">0.001</field>
 </param>
-<param humanName="Yaw axis rate conroller input frequency in Hz" name="ATC_RAT_YAW_FILT" documentation="Yaw axis rate conroller input frequency in Hz" user="Standard">
+<param humanName="Yaw axis rate controller input frequency in Hz" name="ATC_RAT_YAW_FILT" documentation="Yaw axis rate controller input frequency in Hz" user="Standard">
 <field name="Range">1 100</field>
 <field name="Increment">1</field>
 <field name="Units">Hz</field>
@@ -4622,11 +3632,11 @@
 <field name="Range">0 10</field>
 <field name="Increment">1</field>
 </param>
-<param humanName="Use NavEKF Kalman filter for attitude and position estimation" name="AHRS_EKF_TYPE" documentation='This controls whether the NavEKF Kalman filter is used for attitude and position estimation and whether fallback to the DCM algorithm is allowed. Note that on copters "disabled" is not available, and will be the same as "enabled - no fallback"' user="Advanced">
+<param humanName="Use NavEKF Kalman filter for attitude and position estimation" name="AHRS_EKF_TYPE" documentation="This controls which NavEKF Kalman filter version is used for attitude and position estimation" user="Advanced">
 <values>
 <value code="0">Disabled</value>
-<value code="1">Enabled</value>
 <value code="2">Enable EKF2</value>
+<value code="3">Enable EKF3</value>
 </values>
 </param>
 </parameters>
@@ -5170,7 +4180,7 @@
 </values>
 </param>
 <param humanName="Specific Gravity (For water depth measurement)" name="GND_SPEC_GRAV" documentation="This sets the specific gravity of the fluid when flying an underwater ROV. Set to 1.0 for freshwater or 1.024 for saltwater">
-<field name="Values">1.0:Fresh Water, 1.024:Salt Water</field>
+<field name="Values">1.0:Fresh Water,1.024:Salt Water</field>
 </param>
 <param humanName="Base Pressure (For water depth measurement)" name="GND_BASE_PRESS" documentation="Base diving pressure. This is the ambient air pressure at launch site, and is persistent between boots.">
 <field name="Units">pascals</field>
@@ -5178,7 +4188,7 @@
 <param humanName="Reset Base Pressure (For water depth measurement)" name="GND_BASE_RESET" documentation="Set to 1 (reset) to reset base pressure on next boot">
 <values>
 <value code="0">Keep</value>
-<value code=" 1">Reset</value>
+<value code="1">Reset</value>
 </values>
 <field name="RebootRequired">True</field>
 </param>
@@ -5219,6 +4229,10 @@
 <value code="9">PX4-UAVCAN</value>
 <value code="10">SBF</value>
 <value code="11">GSOF</value>
+<value code="12">QURT</value>
+<value code="13">ERB</value>
+<value code="14">MAV</value>
+<value code="15">NOVA</value>
 </values>
 <field name="RebootRequired">True</field>
 </param>
@@ -5330,6 +4344,7 @@
 <value code="125">8Hz</value>
 <value code="200">5Hz</value>
 </values>
+<field name="Units">milliseconds</field>
 </param>
 <param humanName="GPS 2 update rate in milliseconds" name="GPS_RATE_MS2" documentation="Controls how often the GPS should provide a position update. Lowering below 5Hz is not allowed" user="Advanced">
 <values>
@@ -5337,6 +4352,7 @@
 <value code="125">8Hz</value>
 <value code="200">5Hz</value>
 </values>
+<field name="Units">milliseconds</field>
 </param>
 <param humanName="Antenna X position offset" name="GPS_POS1_X" documentation="X position of the first GPS antenna in body frame. Positive X is forward of the origin. Use antenna phase centroid location if provided by the manufacturer." user="Advanced">
 <field name="Units">m</field>
@@ -5497,6 +4513,13 @@
 <value code="3">All</value>
 </values>
 </param>
+<param humanName="Avoidance max lean angle in non-GPS flight modes" name="AVOID_ANGLE" documentation="Max lean angle used to avoid obstacles while in non-GPS modes" user="Standard">
+<field name="Range">0 4500</field>
+</param>
+<param humanName="Avoidance distance maximum in non-GPS flight modes" name="AVOID_DIST_MAX" documentation="Distance from object at which obstacle avoidance will begin in non-GPS modes" user="Standard">
+<field name="Range">3 30</field>
+<field name="Units">meters</field>
+</param>
 </parameters>
 <parameters name="RALLY_">
 <param humanName="Rally Total" name="RALLY_TOTAL" documentation="Number of rally points currently loaded" user="Advanced">
@@ -5628,6 +4651,11 @@
 <value code=" 1">PWM disabled while disarmed</value>
 </values>
 </param>
+<param humanName="Yaw Servo Max Lean Angle" name="MOT_YAW_SV_ANGLE" documentation="Yaw servo's maximum lean angle" user="Standard">
+<field name="Range">5 80</field>
+<field name="Increment">1</field>
+<field name="Units">Degrees</field>
+</param>
 </parameters>
 <parameters name="RCMAP_">
 <param humanName="Roll channel" name="RCMAP_ROLL" documentation="Roll channel number. This is useful when you have a RC transmitter that can't change the channel order easily. Roll is normally on channel 1, but you can move it to any channel with this parameter.  Reboot is required for changes to take effect." user="Advanced">
@@ -5659,171 +4687,6 @@
 <field name="Range">1 8</field>
 <field name="Increment">1</field>
 <field name="RebootRequired">True</field>
-</param>
-</parameters>
-<parameters name="EKF_">
-<param humanName="Enable EKF1" name="EKF_ENABLE" documentation="This enables EKF1 to be disabled when using alternative algorithms. When disabling it, the alternate EKF2 estimator must be enabled by setting EK2_ENABLED = 1 and flight control algorithms must be set to use the alternative estimator by setting AHRS_EKF_TYPE = 2." user="Advanced">
-<values>
-<value code="0">Disabled</value>
-<value code=" 1">Enabled</value>
-</values>
-</param>
-<param humanName="GPS horizontal velocity measurement noise scaler" name="EKF_VELNE_NOISE" documentation="This is the scaler that is applied to the speed accuracy reported by the receiver to estimate the horizontal velocity observation noise. If the model of receiver used does not provide a speed accurcy estimate, then a speed accuracy of 1 is assumed. Increasing it reduces the weighting on these measurements." user="Advanced">
-<field name="Range">0.05 5.0</field>
-<field name="Increment">0.05</field>
-</param>
-<param humanName="GPS vertical velocity measurement noise scaler" name="EKF_VELD_NOISE" documentation="This is the scaler that is applied to the speed accuracy reported by the receiver to estimate the vertical velocity observation noise. If the model of receiver used does not provide a speed accurcy estimate, then a speed accuracy of 1 is assumed. Increasing it reduces the weighting on this measurement." user="Advanced">
-<field name="Range">0.05 5.0</field>
-<field name="Increment">0.05</field>
-</param>
-<param humanName="GPS horizontal position measurement noise (m)" name="EKF_POSNE_NOISE" documentation="This is the RMS value of noise in the GPS horizontal position measurements. Increasing it reduces the weighting on these measurements." user="Advanced">
-<field name="Range">0.1 10.0</field>
-<field name="Increment">0.1</field>
-<field name="Units">meters</field>
-</param>
-<param humanName="Altitude measurement noise (m)" name="EKF_ALT_NOISE" documentation="This is the RMS value of noise in the altitude measurement. Increasing it reduces the weighting on this measurement." user="Advanced">
-<field name="Range">0.1 10.0</field>
-<field name="Increment">0.1</field>
-<field name="Units">meters</field>
-</param>
-<param humanName="Magnetometer measurement noise (Gauss)" name="EKF_MAG_NOISE" documentation="This is the RMS value of noise in magnetometer measurements. Increasing it reduces the weighting on these measurements." user="Advanced">
-<field name="Range">0.01 0.5</field>
-<field name="Increment">0.01</field>
-</param>
-<param humanName="Equivalent airspeed measurement noise (m/s)" name="EKF_EAS_NOISE" documentation="This is the RMS value of noise in equivalent airspeed measurements. Increasing it reduces the weighting on these measurements." user="Advanced">
-<field name="Range">0.5 5.0</field>
-<field name="Increment">0.1</field>
-<field name="Units">m/s</field>
-</param>
-<param humanName="Wind velocity process noise (m/s^2)" name="EKF_WIND_PNOISE" documentation="This noise controls the growth of wind state error estimates. Increasing it makes wind estimation faster and noisier." user="Advanced">
-<field name="Range">0.01 1.0</field>
-<field name="Increment">0.1</field>
-</param>
-<param humanName="Height rate to wind procss noise scaler" name="EKF_WIND_PSCALE" documentation="Increasing this parameter increases how rapidly the wind states adapt when changing altitude, but does make wind speed estimation noiser." user="Advanced">
-<field name="Range">0.0 1.0</field>
-<field name="Increment">0.1</field>
-</param>
-<param humanName="Rate gyro noise (rad/s)" name="EKF_GYRO_PNOISE" documentation="This noise controls the growth of estimated error due to gyro measurement errors excluding bias. Increasing it makes the flter trust the gyro measurements less and other measurements more." user="Advanced">
-<field name="Range">0.001 0.05</field>
-<field name="Increment">0.001</field>
-<field name="Units">rad/s</field>
-</param>
-<param humanName="Accelerometer noise (m/s^2)" name="EKF_ACC_PNOISE" documentation="This noise controls the growth of estimated error due to accelerometer measurement errors excluding bias. Increasing it makes the flter trust the accelerometer measurements less and other measurements more." user="Advanced">
-<field name="Range">0.05 1.0</field>
-<field name="Increment">0.01</field>
-<field name="Units">m/s/s</field>
-</param>
-<param humanName="Rate gyro bias process noise (rad/s)" name="EKF_GBIAS_PNOISE" documentation="This noise controls the growth of gyro bias state error estimates. Increasing it makes rate gyro bias estimation faster and noisier." user="Advanced">
-<field name="Range">0.0000001 0.00001</field>
-<field name="Units">rad/s</field>
-</param>
-<param humanName="Accelerometer bias process noise (m/s^2)" name="EKF_ABIAS_PNOISE" documentation="This noise controls the growth of the vertical acelerometer bias state error estimate. Increasing it makes accelerometer bias estimation faster and noisier." user="Advanced">
-<field name="Range">0.00001 0.001</field>
-<field name="Units">m/s/s</field>
-</param>
-<param humanName="Earth magnetic field process noise (gauss/s)" name="EKF_MAGE_PNOISE" documentation="This noise controls the growth of earth magnetic field state error estimates. Increasing it makes earth magnetic field bias estimation faster and noisier." user="Advanced">
-<field name="Range">0.0001 0.01</field>
-<field name="Units">gauss/s</field>
-</param>
-<param humanName="Body magnetic field process noise (gauss/s)" name="EKF_MAGB_PNOISE" documentation="This noise controls the growth of body magnetic field state error estimates. Increasing it makes compass offset estimation faster and noisier." user="Advanced">
-<field name="Range">0.0001 0.01</field>
-<field name="Units">gauss/s</field>
-</param>
-<param humanName="GPS velocity measurement delay (msec)" name="EKF_VEL_DELAY" documentation="This is the number of msec that the GPS velocity measurements lag behind the inertial measurements." user="Advanced">
-<field name="Range">0 500</field>
-<field name="Increment">10</field>
-<field name="Units">milliseconds</field>
-</param>
-<param humanName="GPS position measurement delay (msec)" name="EKF_POS_DELAY" documentation="This is the number of msec that the GPS position measurements lag behind the inertial measurements." user="Advanced">
-<field name="Range">0 500</field>
-<field name="Increment">10</field>
-<field name="Units">milliseconds</field>
-</param>
-<param humanName="GPS mode control" name="EKF_GPS_TYPE" documentation="This parameter controls use of GPS measurements : 0 = use 3D velocity &amp; 2D position, 1 = use 2D velocity and 2D position, 2 = use 2D position, 3 = use no GPS (optical flow will be used if available)" user="Advanced">
-<values>
-<value code="0">GPS 3D Vel and 2D Pos</value>
-<value code=" 1">GPS 2D vel and 2D pos</value>
-<value code=" 2">GPS 2D pos</value>
-<value code=" 3">No GPS use optical flow</value>
-</values>
-</param>
-<param humanName="GPS velocity measurement gate size" name="EKF_VEL_GATE" documentation="This parameter sets the number of standard deviations applied to the GPS velocity measurement innovation consistency check. Decreasing it makes it more likely that good measurements willbe rejected. Increasing it makes it more likely that bad measurements will be accepted." user="Advanced">
-<field name="Range">1 100</field>
-<field name="Increment">1</field>
-</param>
-<param humanName="GPS position measurement gate size" name="EKF_POS_GATE" documentation="This parameter sets the number of standard deviations applied to the GPS position measurement innovation consistency check. Decreasing it makes it more likely that good measurements will be rejected. Increasing it makes it more likely that bad measurements will be accepted." user="Advanced">
-<field name="Range">1 100</field>
-<field name="Increment">1</field>
-</param>
-<param humanName="Height measurement gate size" name="EKF_HGT_GATE" documentation="This parameter sets the number of standard deviations applied to the height measurement innovation consistency check. Decreasing it makes it more likely that good measurements will be rejected. Increasing it makes it more likely that bad measurements will be accepted." user="Advanced">
-<field name="Range">1 100</field>
-<field name="Increment">1</field>
-</param>
-<param humanName="Magnetometer measurement gate size" name="EKF_MAG_GATE" documentation="This parameter sets the number of standard deviations applied to the magnetometer measurement innovation consistency check. Decreasing it makes it more likely that good measurements will be rejected. Increasing it makes it more likely that bad measurements will be accepted." user="Advanced">
-<field name="Range">1 100</field>
-<field name="Increment">1</field>
-</param>
-<param humanName="Airspeed measurement gate size" name="EKF_EAS_GATE" documentation="This parameter sets the number of standard deviations applied to the airspeed measurement innovation consistency check. Decreasing it makes it more likely that good measurements will be rejected. Increasing it makes it more likely that bad measurements will be accepted." user="Advanced">
-<field name="Range">1 100</field>
-<field name="Increment">1</field>
-</param>
-<param humanName="Magnetometer calibration mode" name="EKF_MAG_CAL" documentation="EKF_MAG_CAL = 0 enables calibration based on flying speed and altitude and is the default setting for Plane users. EKF_MAG_CAL = 1 enables calibration based on manoeuvre level and is the default setting for Copter and Rover users. EKF_MAG_CAL = 2 prevents magnetometer calibration regardless of flight condition and is recommended if in-flight magnetometer calibration is unreliable." user="Advanced">
-<values>
-<value code="0">Speed and Height</value>
-<value code="1">Acceleration</value>
-<value code="2">Never</value>
-<value code="3">Always</value>
-</values>
-</param>
-<param humanName="GPS glitch accel gate size (cm/s^2)" name="EKF_GLITCH_ACCEL" documentation="This parameter controls the maximum amount of difference in horizontal acceleration between the value predicted by the filter and the value measured by the GPS before the GPS position data is rejected. If this value is set too low, then valid GPS data will be regularly discarded, and the position accuracy will degrade. If this parameter is set too high, then large GPS glitches will cause large rapid changes in position." user="Advanced">
-<field name="Range">100 500</field>
-<field name="Increment">50</field>
-</param>
-<param humanName="GPS glitch radius gate size (m)" name="EKF_GLITCH_RAD" documentation="This parameter controls the maximum amount of difference in horizontal position (in m) between the value predicted by the filter and the value measured by the GPS before the long term glitch protection logic is activated and the filter states are reset to the new GPS position. Position steps smaller than this value will be temporarily ignored, but will then be accepted and the filter will move to the new position. Position steps larger than this value will be ignored initially, but the filter will then apply an offset to the GPS position measurement." user="Advanced">
-<field name="Range">10 50</field>
-<field name="Increment">5</field>
-<field name="Units">meters</field>
-</param>
-<param humanName="Terrain Gradient % RMS" name="EKF_GND_GRADIENT" documentation="This parameter sets the RMS terrain gradient percentage assumed by the terrain height estimation. Terrain height can be estimated using optical flow and/or range finder sensor data if fitted. Smaller values cause the terrain height estimate to be slower to respond to changes in measurement. Larger values cause the terrain height estimate to be faster to respond, but also more noisy. Generally this value can be reduced if operating over very flat terrain and increased if operating over uneven terrain." user="Advanced">
-<field name="Range">1 50</field>
-<field name="Increment">1</field>
-</param>
-<param humanName="Optical flow measurement noise (rad/s)" name="EKF_FLOW_NOISE" documentation="This is the RMS value of noise and errors in optical flow measurements. Increasing it reduces the weighting on these measurements." user="Advanced">
-<field name="Range">0.05 1.0</field>
-<field name="Increment">0.05</field>
-<field name="Units">rad/s</field>
-</param>
-<param humanName="Optical Flow measurement gate size" name="EKF_FLOW_GATE" documentation="This parameter sets the number of standard deviations applied to the optical flow innovation consistency check. Decreasing it makes it more likely that good measurements will be rejected. Increasing it makes it more likely that bad measurements will be accepted." user="Advanced">
-<field name="Range">1 100</field>
-<field name="Increment">1</field>
-</param>
-<param humanName="Optical Flow measurement delay (msec)" name="EKF_FLOW_DELAY" documentation="This is the number of msec that the optical flow measurements lag behind the inertial measurements. It is the time from the end of the optical flow averaging period and does not include the time delay due to the 100msec of averaging within the flow sensor." user="Advanced">
-<field name="Range">0 500</field>
-<field name="Increment">10</field>
-<field name="Units">milliseconds</field>
-</param>
-<param humanName="Range finder measurement gate size" name="EKF_RNG_GATE" documentation="This parameter sets the number of standard deviations applied to the range finder innovation consistency check. Decreasing it makes it more likely that good measurements will be rejected. Increasing it makes it more likely that bad measurements will be accepted." user="Advanced">
-<field name="Range">1 100</field>
-<field name="Increment">1</field>
-</param>
-<param humanName="Maximum valid optical flow rate" name="EKF_MAX_FLOW" documentation="This parameter sets the magnitude maximum optical flow rate in rad/sec that will be accepted by the filter" user="Advanced">
-<field name="Range">1.0 4.0</field>
-<field name="Increment">0.1</field>
-</param>
-<param humanName="Fallback strictness" name="EKF_FALLBACK" documentation="This parameter controls the conditions necessary to trigger a fallback to DCM and INAV. A value of 1 will cause fallbacks to occur on loss of GPS and other conditions. A value of 0 will trust the EKF more." user="Advanced">
-<values>
-<value code="0">Trust EKF more</value>
-<value code=" 1">Trust DCM more</value>
-</values>
-</param>
-<param humanName="Primary height source" name="EKF_ALT_SOURCE" documentation="This parameter controls which height sensor is used by the EKF during optical flow navigation (when EKF_GPS_TYPE = 3). A value of will 0 cause it to always use baro altitude. A value of 1 will cause it to use range finder if available." user="Advanced">
-<values>
-<value code="0">Use Baro</value>
-<value code=" 1">Use Range Finder</value>
-</values>
-</param>
-<param humanName="GPS preflight check" name="EKF_GPS_CHECK" documentation="1 byte bitmap of GPS preflight checks to perform. Set to 0 to bypass all checks. Set to 255 perform all checks. Set to 3 to check just the number of satellites and HDoP. Set to 31 for the most rigorous checks that will still allow checks to pass when the copter is moving, eg launch from a boat." user="Advanced">
-<field name="Bitmask">0:NSats,1:HDoP,2:speed error,3:horiz pos error,4:yaw error,5:pos drift,6:vert speed,7:horiz speed</field>
 </param>
 </parameters>
 <parameters name="EK2_">
@@ -5874,7 +4737,7 @@
 <field name="Increment">10</field>
 <field name="Units">msec</field>
 </param>
-<param humanName="Primary height source" name="EK2_ALT_SOURCE" documentation="This parameter controls the primary height sensor used by the EKF. If the selected option cannot be used, it will default to Baro as the primary height source. Setting 0 will use the baro altitude at all times. Setting 1 uses the range finder and is only available in combination with optical flow navigation (EK2_GPS_TYPE = 3). Setting 2 uses GPS. Setting 3 uses the range beacon data. NOTE - the EK2_RNG_USE_HGT parameter can be used to switch to range-finder when close to the ground." user="Advanced">
+<param humanName="Primary altitude sensor source" name="EK2_ALT_SOURCE" documentation="This parameter controls the primary height sensor used by the EKF. If the selected option cannot be used, it will default to Baro as the primary height source. Setting 0 will use the baro altitude at all times. Setting 1 uses the range finder and is only available in combination with optical flow navigation (EK2_GPS_TYPE = 3). Setting 2 uses GPS. Setting 3 uses the range beacon data. NOTE - the EK2_RNG_USE_HGT parameter can be used to switch to range-finder when close to the ground." user="Advanced">
 <values>
 <value code="0">Use Baro</value>
 <value code=" 1">Use Range Finder</value>
@@ -5978,7 +4841,7 @@
 <field name="Increment">0.1</field>
 <field name="Units">m/s/s</field>
 </param>
-<param humanName="Height rate to wind procss noise scaler" name="EK2_WIND_PSCALE" documentation="This controls how much the process noise on the wind states is increased when gaining or losing altitude to take into account changes in wind speed and direction with altitude. Increasing this parameter increases how rapidly the wind states adapt when changing altitude, but does make wind velocity estimation noiser." user="Advanced">
+<param humanName="Height rate to wind process noise scaler" name="EK2_WIND_PSCALE" documentation="This controls how much the process noise on the wind states is increased when gaining or losing altitude to take into account changes in wind speed and direction with altitude. Increasing this parameter increases how rapidly the wind states adapt when changing altitude, but does make wind velocity estimation noiser." user="Advanced">
 <field name="Range">0.0 1.0</field>
 <field name="Increment">0.1</field>
 </param>
@@ -5986,7 +4849,7 @@
 <field name="Bitmask">0:NSats,1:HDoP,2:speed error,3:horiz pos error,4:yaw error,5:pos drift,6:vert speed,7:horiz speed</field>
 </param>
 <param humanName="Bitmask of active IMUs" name="EK2_IMU_MASK" documentation="1 byte bitmap of IMUs to use in EKF2. A separate instance of EKF2 will be started for each IMU selected. Set to 1 to use the first IMU only (default), set to 2 to use the second IMU only, set to 3 to use the first and second IMU. Additional IMU's can be used up to a maximum of 6 if memory and processing resources permit. There may be insufficient memory and processing resources to run multiple instances. If this occurs EKF2 will fail to start." user="Advanced">
-<field name="Range">1 127</field>
+<field name="Bitmask">0:FirstIMU,1:SecondIMU,2:ThirdIMU,3:FourthIMU,4:FifthIMU,5:SixthIMU</field>
 </param>
 <param humanName="GPS accuracy check scaler (%)" name="EK2_CHECK_SCALE" documentation="This scales the thresholds that are used to check GPS accuracy before it is used by the EKF. A value of 100 is the default. Values greater than 100 increase and values less than 100 reduce the maximum GPS error the EKF will accept. A value of 200 will double the allowable GPS error." user="Advanced">
 <field name="Range">50 200</field>
@@ -5994,20 +4857,15 @@
 </param>
 <param humanName="Non-GPS operation position uncertainty (m)" name="EK2_NOAID_M_NSE" documentation="This sets the amount of position variation that the EKF allows for when operating without external measurements (eg GPS or optical flow). Increasing this parameter makes the EKF attitude estimate less sensitive to vehicle manoeuvres but more sensitive to IMU errors." user="Advanced">
 <field name="Range">0.5 50.0</field>
-<field name="Units">m/s</field>
+<field name="Units">m</field>
 </param>
 <param humanName="EKF sensor logging IMU mask" name="EK2_LOG_MASK" documentation="This sets the IMU mask of sensors to do full logging for" user="Advanced">
-<values>
-<value code="0">Disabled</value>
-<value code="1">FirstIMU</value>
-<value code="3">FirstAndSecondIMU</value>
-<value code="7">AllIMUs</value>
-</values>
+<field name="Bitmask">0:FirstIMU,1:SecondIMU,2:ThirdIMU,3:FourthIMU,4:FifthIMU,5:SixthIMU</field>
 </param>
 <param humanName="Yaw measurement noise (rad)" name="EK2_YAW_M_NSE" documentation="This is the RMS value of noise in yaw measurements from the magnetometer. Increasing it reduces the weighting on these measurements." user="Advanced">
 <field name="Range">0.05 1.0</field>
 <field name="Increment">0.05</field>
-<field name="Units">gauss</field>
+<field name="Units">rad</field>
 </param>
 <param humanName="Yaw measurement gate size" name="EK2_YAW_I_GATE" documentation="This sets the percentage number of standard deviations applied to the magnetometer yaw measurement innovation consistency check. Decreasing it makes it more likely that good measurements will be rejected. Increasing it makes it more likely that bad measurements will be accepted." user="Advanced">
 <field name="Range">100 1000</field>
@@ -6016,6 +4874,7 @@
 <param humanName="Output complementary filter time constant (centi-sec)" name="EK2_TAU_OUTPUT" documentation="Sets the time constant of the output complementary filter/predictor in centi-seconds." user="Advanced">
 <field name="Range">10 50</field>
 <field name="Increment">5</field>
+<field name="Units">cs</field>
 </param>
 <param humanName="Earth magnetic field process noise (gauss/s)" name="EK2_MAGE_P_NSE" documentation="This state process noise controls the growth of earth magnetic field state error estimates. Increasing it makes earth magnetic field estimation faster and noisier." user="Advanced">
 <field name="Range">0.00001 0.01</field>
@@ -6030,7 +4889,7 @@
 <field name="Increment">1</field>
 <field name="Units">%</field>
 </param>
-<param humanName="Maximum terrain gradient" name="EK2_TERR_GRAD" documentation="Specifies the maxium gradient of the terrain below the vehicle when it is using range finder as a height reference" user="Advanced">
+<param humanName="Maximum terrain gradient" name="EK2_TERR_GRAD" documentation="Specifies the maximum gradient of the terrain below the vehicle when it is using range finder as a height reference" user="Advanced">
 <field name="Range">0 0.2</field>
 <field name="Increment">0.01</field>
 </param>
@@ -6047,6 +4906,236 @@
 <field name="Range">0 250</field>
 <field name="Increment">10</field>
 <field name="Units">msec</field>
+</param>
+<param humanName="Range finder max ground speed" name="EK2_RNG_USE_SPD" documentation="The range finder will not be used as the primary height source when the horizontal ground speed is greater than this value." user="Advanced">
+<field name="Range">2.0 6.0</field>
+<field name="Increment">0.5</field>
+<field name="Units">m/s</field>
+</param>
+</parameters>
+<parameters name="EK3_">
+<param humanName="Enable EKF3" name="EK3_ENABLE" documentation="This enables EKF3. Enabling EKF3 only makes the maths run, it does not mean it will be used for flight control. To use it for flight control set AHRS_EKF_TYPE=3. A reboot or restart will need to be performed after changing the value of EK2_ENABLE for it to take effect." user="Advanced">
+<values>
+<value code="0">Disabled</value>
+<value code=" 1">Enabled</value>
+</values>
+</param>
+<param humanName="GPS mode control" name="EK3_GPS_TYPE" documentation="This controls use of GPS measurements : 0 = use 3D velocity &amp; 2D position, 1 = use 2D velocity and 2D position, 2 = use 2D position, 3 = Inhibit GPS use - this can be useful when flying with an optical flow sensor in an environment where GPS quality is poor and subject to large multipath errors." user="Advanced">
+<values>
+<value code="0">GPS 3D Vel and 2D Pos</value>
+<value code=" 1">GPS 2D vel and 2D pos</value>
+<value code=" 2">GPS 2D pos</value>
+<value code=" 3">No GPS</value>
+</values>
+</param>
+<param humanName="GPS horizontal velocity measurement noise (m/s)" name="EK3_VELNE_M_NSE" documentation="This sets a lower limit on the speed accuracy reported by the GPS receiver that is used to set horizontal velocity observation noise. If the model of receiver used does not provide a speed accurcy estimate, then the parameter value will be used. Increasing it reduces the weighting of the GPS horizontal velocity measurements." user="Advanced">
+<field name="Range">0.05 5.0</field>
+<field name="Increment">0.05</field>
+<field name="Units">m/s</field>
+</param>
+<param humanName="GPS vertical velocity measurement noise (m/s)" name="EK3_VELD_M_NSE" documentation="This sets a lower limit on the speed accuracy reported by the GPS receiver that is used to set vertical velocity observation noise. If the model of receiver used does not provide a speed accurcy estimate, then the parameter value will be used. Increasing it reduces the weighting of the GPS vertical velocity measurements." user="Advanced">
+<field name="Range">0.05 5.0</field>
+<field name="Increment">0.05</field>
+<field name="Units">m/s</field>
+</param>
+<param humanName="GPS velocity innovation gate size" name="EK3_VEL_I_GATE" documentation="This sets the percentage number of standard deviations applied to the GPS velocity measurement innovation consistency check. Decreasing it makes it more likely that good measurements willbe rejected. Increasing it makes it more likely that bad measurements will be accepted." user="Advanced">
+<field name="Range">100 1000</field>
+<field name="Increment">25</field>
+</param>
+<param humanName="GPS horizontal position measurement noise (m)" name="EK3_POSNE_M_NSE" documentation="This sets the GPS horizontal position observation noise. Increasing it reduces the weighting of GPS horizontal position measurements." user="Advanced">
+<field name="Range">0.1 10.0</field>
+<field name="Increment">0.1</field>
+<field name="Units">m</field>
+</param>
+<param humanName="GPS position measurement gate size" name="EK3_POS_I_GATE" documentation="This sets the percentage number of standard deviations applied to the GPS position measurement innovation consistency check. Decreasing it makes it more likely that good measurements will be rejected. Increasing it makes it more likely that bad measurements will be accepted." user="Advanced">
+<field name="Range">100 1000</field>
+<field name="Increment">25</field>
+</param>
+<param humanName="GPS glitch radius gate size (m)" name="EK3_GLITCH_RAD" documentation="This controls the maximum radial uncertainty in position between the value predicted by the filter and the value measured by the GPS before the filter position and velocity states are reset to the GPS. Making this value larger allows the filter to ignore larger GPS glitches but also means that non-GPS errors such as IMU and compass can create a larger error in position before the filter is forced back to the GPS position." user="Advanced">
+<field name="Range">10 100</field>
+<field name="Increment">5</field>
+<field name="Units">m</field>
+</param>
+<param humanName="GPS measurement delay (msec)" name="EK3_GPS_DELAY" documentation="This is the number of msec that the GPS measurements lag behind the inertial measurements." user="Advanced">
+<field name="Range">0 250</field>
+<field name="Increment">10</field>
+<field name="Units">msec</field>
+</param>
+<param humanName="Primary altitude sensor source" name="EK3_ALT_SOURCE" documentation="This parameter controls the primary height sensor used by the EKF. If the selected option cannot be used, it will default to Baro as the primary height source. Setting 0 will use the baro altitude at all times. Setting 1 uses the range finder and is only available in combination with optical flow navigation (EK2_GPS_TYPE = 3). Setting 2 uses GPS. Setting 3 uses the range beacon data. NOTE - the EK2_RNG_USE_HGT parameter can be used to switch to range-finder when close to the ground." user="Advanced">
+<values>
+<value code="0">Use Baro</value>
+<value code=" 1">Use Range Finder</value>
+<value code=" 2">Use GPS</value>
+<value code=" 3">Use Range Beacon</value>
+</values>
+</param>
+<param humanName="Altitude measurement noise (m)" name="EK3_ALT_M_NSE" documentation="This is the RMS value of noise in the altitude measurement. Increasing it reduces the weighting of the baro measurement and will make the filter respond more slowly to baro measurement errors, but will make it more sensitive to GPS and accelerometer errors." user="Advanced">
+<field name="Range">0.1 10.0</field>
+<field name="Increment">0.1</field>
+<field name="Units">m</field>
+</param>
+<param humanName="Height measurement gate size" name="EK3_HGT_I_GATE" documentation="This sets the percentage number of standard deviations applied to the height measurement innovation consistency check. Decreasing it makes it more likely that good measurements will be rejected. Increasing it makes it more likely that bad measurements will be accepted." user="Advanced">
+<field name="Range">100 1000</field>
+<field name="Increment">25</field>
+</param>
+<param humanName="Height measurement delay (msec)" name="EK3_HGT_DELAY" documentation="This is the number of msec that the Height measurements lag behind the inertial measurements." user="Advanced">
+<field name="Range">0 250</field>
+<field name="Increment">10</field>
+<field name="Units">msec</field>
+</param>
+<param humanName="Magnetometer measurement noise (Gauss)" name="EK3_MAG_M_NSE" documentation="This is the RMS value of noise in magnetometer measurements. Increasing it reduces the weighting on these measurements." user="Advanced">
+<field name="Range">0.01 0.5</field>
+<field name="Increment">0.01</field>
+<field name="Units">gauss</field>
+</param>
+<param humanName="Magnetometer calibration mode" name="EK3_MAG_CAL" documentation="EKF_MAG_CAL = 0 enables calibration when airborne and is the default setting for Plane users. EKF_MAG_CAL = 1 enables calibration when manoeuvreing. EKF_MAG_CAL = 2 prevents magnetometer calibration regardless of flight condition, is recommended if the external magnetic field is varying and is the default for rovers. EKF_MAG_CAL = 3 enables calibration when the first in-air field and yaw reset has completed and is the default for copters. EKF_MAG_CAL = 4 enables calibration all the time. This determines when the filter will use the 3-axis magnetometer fusion model that estimates both earth and body fixed magnetic field states. This model is only suitable for use when the external magnetic field environment is stable." user="Advanced">
+<values>
+<value code="0">When flying</value>
+<value code="1">When manoeuvring</value>
+<value code="2">Never</value>
+<value code="3">After first climb yaw reset</value>
+<value code="4">Always</value>
+</values>
+</param>
+<param humanName="Magnetometer measurement gate size" name="EK3_MAG_I_GATE" documentation="This sets the percentage number of standard deviations applied to the magnetometer measurement innovation consistency check. Decreasing it makes it more likely that good measurements will be rejected. Increasing it makes it more likely that bad measurements will be accepted." user="Advanced">
+<field name="Range">100 1000</field>
+<field name="Increment">25</field>
+</param>
+<param humanName="Equivalent airspeed measurement noise (m/s)" name="EK3_EAS_M_NSE" documentation="This is the RMS value of noise in equivalent airspeed measurements used by planes. Increasing it reduces the weighting of airspeed measurements and will make wind speed estimates less noisy and slower to converge. Increasing also increases navigation errors when dead-reckoning without GPS measurements." user="Advanced">
+<field name="Range">0.5 5.0</field>
+<field name="Increment">0.1</field>
+<field name="Units">m/s</field>
+</param>
+<param humanName="Airspeed measurement gate size" name="EK3_EAS_I_GATE" documentation="This sets the percentage number of standard deviations applied to the airspeed measurement innovation consistency check. Decreasing it makes it more likely that good measurements will be rejected. Increasing it makes it more likely that bad measurements will be accepted." user="Advanced">
+<field name="Range">100 1000</field>
+<field name="Increment">25</field>
+</param>
+<param humanName="Range finder measurement noise (m)" name="EK3_RNG_M_NSE" documentation="This is the RMS value of noise in the range finder measurement. Increasing it reduces the weighting on this measurement." user="Advanced">
+<field name="Range">0.1 10.0</field>
+<field name="Increment">0.1</field>
+<field name="Units">m</field>
+</param>
+<param humanName="Range finder measurement gate size" name="EK3_RNG_I_GATE" documentation="This sets the percentage number of standard deviations applied to the range finder innovation consistency check. Decreasing it makes it more likely that good measurements will be rejected. Increasing it makes it more likely that bad measurements will be accepted." user="Advanced">
+<field name="Range">100 1000</field>
+<field name="Increment">25</field>
+</param>
+<param humanName="Maximum valid optical flow rate" name="EK3_MAX_FLOW" documentation="This sets the magnitude maximum optical flow rate in rad/sec that will be accepted by the filter" user="Advanced">
+<field name="Range">1.0 4.0</field>
+<field name="Increment">0.1</field>
+<field name="Units">rad/s</field>
+</param>
+<param humanName="Optical flow measurement noise (rad/s)" name="EK3_FLOW_M_NSE" documentation="This is the RMS value of noise and errors in optical flow measurements. Increasing it reduces the weighting on these measurements." user="Advanced">
+<field name="Range">0.05 1.0</field>
+<field name="Increment">0.05</field>
+<field name="Units">rad/s</field>
+</param>
+<param humanName="Optical Flow measurement gate size" name="EK3_FLOW_I_GATE" documentation="This sets the percentage number of standard deviations applied to the optical flow innovation consistency check. Decreasing it makes it more likely that good measurements will be rejected. Increasing it makes it more likely that bad measurements will be accepted." user="Advanced">
+<field name="Range">100 1000</field>
+<field name="Increment">25</field>
+</param>
+<param humanName="Optical Flow measurement delay (msec)" name="EK3_FLOW_DELAY" documentation="This is the number of msec that the optical flow measurements lag behind the inertial measurements. It is the time from the end of the optical flow averaging period and does not include the time delay due to the 100msec of averaging within the flow sensor." user="Advanced">
+<field name="Range">0 250</field>
+<field name="Increment">10</field>
+<field name="Units">msec</field>
+</param>
+<param humanName="Rate gyro noise (rad/s)" name="EK3_GYRO_P_NSE" documentation="This control disturbance noise controls the growth of estimated error due to gyro measurement errors excluding bias. Increasing it makes the flter trust the gyro measurements less and other measurements more." user="Advanced">
+<field name="Range">0.0001 0.1</field>
+<field name="Increment">0.0001</field>
+<field name="Units">rad/s</field>
+</param>
+<param humanName="Accelerometer noise (m/s^2)" name="EK3_ACC_P_NSE" documentation="This control disturbance noise controls the growth of estimated error due to accelerometer measurement errors excluding bias. Increasing it makes the flter trust the accelerometer measurements less and other measurements more." user="Advanced">
+<field name="Range">0.01 1.0</field>
+<field name="Increment">0.01</field>
+<field name="Units">m/s/s</field>
+</param>
+<param humanName="Rate gyro bias stability (rad/s/s)" name="EK3_GBIAS_P_NSE" documentation="This state  process noise controls growth of the gyro delta angle bias state error estimate. Increasing it makes rate gyro bias estimation faster and noisier." user="Advanced">
+<field name="Range">0.00001 0.001</field>
+<field name="Units">rad/s/s</field>
+</param>
+<param humanName="Accelerometer bias stability (m/s^3)" name="EK3_ABIAS_P_NSE" documentation="This noise controls the growth of the vertical accelerometer delta velocity bias state error estimate. Increasing it makes accelerometer bias estimation faster and noisier." user="Advanced">
+<field name="Range">0.00001 0.001</field>
+<field name="Units">m/s/s/s</field>
+</param>
+<param humanName="Wind velocity process noise (m/s^2)" name="EK3_WIND_P_NSE" documentation="This state process noise controls the growth of wind state error estimates. Increasing it makes wind estimation faster and noisier." user="Advanced">
+<field name="Range">0.01 1.0</field>
+<field name="Increment">0.1</field>
+<field name="Units">m/s/s</field>
+</param>
+<param humanName="Height rate to wind process noise scaler" name="EK3_WIND_PSCALE" documentation="This controls how much the process noise on the wind states is increased when gaining or losing altitude to take into account changes in wind speed and direction with altitude. Increasing this parameter increases how rapidly the wind states adapt when changing altitude, but does make wind velocity estimation noiser." user="Advanced">
+<field name="Range">0.0 1.0</field>
+<field name="Increment">0.1</field>
+</param>
+<param humanName="GPS preflight check" name="EK3_GPS_CHECK" documentation="This is a 1 byte bitmap controlling which GPS preflight checks are performed. Set to 0 to bypass all checks. Set to 255 perform all checks. Set to 3 to check just the number of satellites and HDoP. Set to 31 for the most rigorous checks that will still allow checks to pass when the copter is moving, eg launch from a boat." user="Advanced">
+<field name="Bitmask">0:NSats,1:HDoP,2:speed error,3:horiz pos error,4:yaw error,5:pos drift,6:vert speed,7:horiz speed</field>
+</param>
+<param humanName="Bitmask of active IMUs" name="EK3_IMU_MASK" documentation="1 byte bitmap of IMUs to use in EKF3. A separate instance of EKF3 will be started for each IMU selected. Set to 1 to use the first IMU only (default), set to 2 to use the second IMU only, set to 3 to use the first and second IMU. Additional IMU's can be used up to a maximum of 6 if memory and processing resources permit. There may be insufficient memory and processing resources to run multiple instances. If this occurs EKF3 will fail to start." user="Advanced">
+<field name="Bitmask">0:FirstIMU,1:SecondIMU,2:ThirdIMU,3:FourthIMU,4:FifthIMU,5:SixthIMU</field>
+</param>
+<param humanName="GPS accuracy check scaler (%)" name="EK3_CHECK_SCALE" documentation="This scales the thresholds that are used to check GPS accuracy before it is used by the EKF. A value of 100 is the default. Values greater than 100 increase and values less than 100 reduce the maximum GPS error the EKF will accept. A value of 200 will double the allowable GPS error." user="Advanced">
+<field name="Range">50 200</field>
+<field name="Units">%</field>
+</param>
+<param humanName="Non-GPS operation position uncertainty (m)" name="EK3_NOAID_M_NSE" documentation="This sets the amount of position variation that the EKF allows for when operating without external measurements (eg GPS or optical flow). Increasing this parameter makes the EKF attitude estimate less sensitive to vehicle manoeuvres but more sensitive to IMU errors." user="Advanced">
+<field name="Range">0.5 50.0</field>
+<field name="Units">m</field>
+</param>
+<param humanName="EKF sensor logging IMU mask" name="EK3_LOG_MASK" documentation="This sets the IMU mask of sensors to do full logging for" user="Advanced">
+<field name="Bitmask">0:FirstIMU,1:SecondIMU,2:ThirdIMU,3:FourthIMU,4:FifthIMU,5:SixthIMU</field>
+</param>
+<param humanName="Yaw measurement noise (rad)" name="EK3_YAW_M_NSE" documentation="This is the RMS value of noise in yaw measurements from the magnetometer. Increasing it reduces the weighting on these measurements." user="Advanced">
+<field name="Range">0.05 1.0</field>
+<field name="Increment">0.05</field>
+<field name="Units">rad</field>
+</param>
+<param humanName="Yaw measurement gate size" name="EK3_YAW_I_GATE" documentation="This sets the percentage number of standard deviations applied to the magnetometer yaw measurement innovation consistency check. Decreasing it makes it more likely that good measurements will be rejected. Increasing it makes it more likely that bad measurements will be accepted." user="Advanced">
+<field name="Range">100 1000</field>
+<field name="Increment">25</field>
+</param>
+<param humanName="Output complementary filter time constant (centi-sec)" name="EK3_TAU_OUTPUT" documentation="Sets the time constant of the output complementary filter/predictor in centi-seconds." user="Advanced">
+<field name="Range">10 50</field>
+<field name="Increment">5</field>
+<field name="Units">cs</field>
+</param>
+<param humanName="Earth magnetic field process noise (gauss/s)" name="EK3_MAGE_P_NSE" documentation="This state process noise controls the growth of earth magnetic field state error estimates. Increasing it makes earth magnetic field estimation faster and noisier." user="Advanced">
+<field name="Range">0.00001 0.01</field>
+<field name="Units">gauss/s</field>
+</param>
+<param humanName="Body magnetic field process noise (gauss/s)" name="EK3_MAGB_P_NSE" documentation="This state process noise controls the growth of body magnetic field state error estimates. Increasing it makes magnetometer bias error estimation faster and noisier." user="Advanced">
+<field name="Range">0.00001 0.01</field>
+<field name="Units">gauss/s</field>
+</param>
+<param humanName="Range finder switch height percentage" name="EK3_RNG_USE_HGT" documentation="The range finder will be used as the primary height source when below a specified percentage of the sensor maximum as set by the RNGFND_MAX_CM parameter. Set to -1 to prevent range finder use." user="Advanced">
+<field name="Range">-1 70</field>
+<field name="Increment">1</field>
+<field name="Units">%</field>
+</param>
+<param humanName="Maximum terrain gradient" name="EK3_TERR_GRAD" documentation="Specifies the maximum gradient of the terrain below the vehicle when it is using range finder as a height reference" user="Advanced">
+<field name="Range">0 0.2</field>
+<field name="Increment">0.01</field>
+</param>
+<param humanName="Range beacon measurement noise (m)" name="EK3_BCN_M_NSE" documentation="This is the RMS value of noise in the range beacon measurement. Increasing it reduces the weighting on this measurement." user="Advanced">
+<field name="Range">0.1 10.0</field>
+<field name="Increment">0.1</field>
+<field name="Units">m</field>
+</param>
+<param humanName="Range beacon measurement gate size" name="EK3_BCN_I_GTE" documentation="This sets the percentage number of standard deviations applied to the range beacon measurement innovation consistency check. Decreasing it makes it more likely that good measurements will be rejected. Increasing it makes it more likely that bad measurements will be accepted." user="Advanced">
+<field name="Range">100 1000</field>
+<field name="Increment">25</field>
+</param>
+<param humanName="Range beacon measurement delay (msec)" name="EK3_BCN_DELAY" documentation="This is the number of msec that the range beacon measurements lag behind the inertial measurements. It is the time from the end of the optical flow averaging period and does not include the time delay due to the 100msec of averaging within the flow sensor." user="Advanced">
+<field name="Range">0 250</field>
+<field name="Increment">10</field>
+<field name="Units">msec</field>
+</param>
+<param humanName="Range finder max ground speed" name="EK3_RNG_USE_SPD" documentation="The range finder will not be used as the primary height source when the horizontal ground speed is greater than this value." user="Advanced">
+<field name="Range">2.0 6.0</field>
+<field name="Increment">0.5</field>
+<field name="Units">m/s</field>
+</param>
+<param humanName="Accelerometer bias limit" name="EK3_ACC_BIAS_LIM" documentation="The accelerometer bias state will be limited to +- this value" user="Advanced">
+<field name="Range">0.5 2.5</field>
+<field name="Increment">0.1</field>
+<field name="Units">m/s/s</field>
 </param>
 </parameters>
 <parameters name="MIS_">
@@ -6583,6 +5672,7 @@
 <values>
 <value code="0">None</value>
 <value code="1">LightWareSF40C</value>
+<value code="2">MAVLink</value>
 </values>
 </param>
 <param humanName="Proximity sensor orientation" name="PRX_ORIENT" documentation="Proximity sensor orientation" user="Standard">
@@ -6593,57 +5683,72 @@
 </param>
 <param humanName="Proximity sensor yaw correction" name="PRX_YAW_CORR" documentation="Proximity sensor yaw correction" user="Standard">
 <field name="Range">-180 180</field>
+<field name="Units">degrees</field>
 </param>
 <param humanName="Proximity sensor ignore angle 1" name="PRX_IGN_ANG1" documentation="Proximity sensor ignore angle 1" user="Standard">
 <field name="Range">0 360</field>
+<field name="Units">degrees</field>
 </param>
 <param humanName="Proximity sensor ignore width 1" name="PRX_IGN_WID1" documentation="Proximity sensor ignore width 1" user="Standard">
 <field name="Range">0 45</field>
+<field name="Units">degrees</field>
 </param>
 <param humanName="Proximity sensor ignore angle 2" name="PRX_IGN_ANG2" documentation="Proximity sensor ignore angle 2" user="Standard">
 <field name="Range">0 360</field>
+<field name="Units">degrees</field>
 </param>
 <param humanName="Proximity sensor ignore width 2" name="PRX_IGN_WID1" documentation="Proximity sensor ignore width 2" user="Standard">
 <field name="Range">0 45</field>
+<field name="Units">degrees</field>
 </param>
 <param humanName="Proximity sensor ignore angle 3" name="PRX_IGN_ANG3" documentation="Proximity sensor ignore angle 3" user="Standard">
 <field name="Range">0 360</field>
+<field name="Units">degrees</field>
 </param>
 <param humanName="Proximity sensor ignore width 3" name="PRX_IGN_WID3" documentation="Proximity sensor ignore width 3" user="Standard">
 <field name="Range">0 45</field>
+<field name="Units">degrees</field>
 </param>
 <param humanName="Proximity sensor ignore angle 4" name="PRX_IGN_ANG4" documentation="Proximity sensor ignore angle 4" user="Standard">
 <field name="Range">0 360</field>
+<field name="Units">degrees</field>
 </param>
 <param humanName="Proximity sensor ignore width 4" name="PRX_IGN_WID4" documentation="Proximity sensor ignore width 4" user="Standard">
 <field name="Range">0 45</field>
+<field name="Units">degrees</field>
 </param>
 <param humanName="Proximity sensor ignore angle 5" name="PRX_IGN_ANG5" documentation="Proximity sensor ignore angle 5" user="Standard">
 <field name="Range">0 360</field>
+<field name="Units">degrees</field>
 </param>
 <param humanName="Proximity sensor ignore width 5" name="PRX_IGN_WID5" documentation="Proximity sensor ignore width 5" user="Standard">
 <field name="Range">0 45</field>
+<field name="Units">degrees</field>
 </param>
 <param humanName="Proximity sensor ignore angle 6" name="PRX_IGN_ANG6" documentation="Proximity sensor ignore angle 6" user="Standard">
 <field name="Range">0 360</field>
+<field name="Units">degrees</field>
 </param>
 <param humanName="Proximity sensor ignore width 6" name="PRX_IGN_WID6" documentation="Proximity sensor ignore width 6" user="Standard">
 <field name="Range">0 45</field>
+<field name="Units">degrees</field>
 </param>
 <param humanName="Second Proximity type" name="PRX2_TYPE" documentation="What type of proximity sensor is connected" user="Advanced">
 <values>
 <value code="0">None</value>
 <value code="1">LightWareSF40C</value>
+<value code="2">MAVLink</value>
 </values>
 </param>
-<param humanName="Second Proximity sensor orientation" name="PRX_ORIENT" documentation="Second Proximity sensor orientation" user="Standard">
+<param humanName="Second Proximity sensor orientation" name="PRX2_ORIENT" documentation="Second Proximity sensor orientation" user="Standard">
 <values>
 <value code="0">Default</value>
 <value code="1">Upside Down</value>
 </values>
 </param>
-<param humanName="Second Proximity sensor yaw correction" name="PRX_YAW_CORR" documentation="Second Proximity sensor yaw correction" user="Standard">
+<param humanName="Second Proximity sensor yaw correction" name="PRX2_YAW_CORR" documentation="Second Proximity sensor yaw correction" user="Standard">
 <field name="Range">-180 180</field>
+<field name="Units">degrees</field>
 </param>
 </parameters>
 <parameters name="GRIP_">
@@ -6662,19 +5767,142 @@
 </param>
 <param humanName="Gripper Grab PWM" name="GRIP_GRAB" documentation="PWM value sent to Gripper to initiate grabbing the cargo" user="Advanced">
 <field name="Range">1000 2000</field>
+<field name="Units">PWM</field>
 </param>
 <param humanName="Gripper Release PWM" name="GRIP_RELEASE" documentation="PWM value sent to Gripper to release the cargo" user="Advanced">
 <field name="Range">1000 2000</field>
+<field name="Units">PWM</field>
 </param>
 <param humanName="Neutral PWM" name="GRIP_NEUTRAL" documentation="PWM value sent to grabber when not grabbing or releasing" user="Advanced">
 <field name="Range">1000 2000</field>
+<field name="Units">PWM</field>
 </param>
 <param humanName="Gripper Regrab interval" name="GRIP_REGRAB" documentation="Time in seconds that gripper will regrab the cargo to ensure grip has not weakened; 0 to disable" user="Advanced">
-<field name="Values">0 255</field>
+<field name="Range">0 255</field>
 <field name="Units">seconds</field>
 </param>
 <param humanName="EPM UAVCAN Hardpoint ID" name="GRIP_UAVCAN_ID" documentation="Refer to https://docs.zubax.com/opengrab_epm_v3#UAVCAN_interface" user="Standard">
 <field name="Range">0 255</field>
+</param>
+</parameters>
+<parameters name="SERVO">
+<param humanName="Minimum PWM" name="SERVOMIN" documentation="minimum PWM pulse width. Typically 1000 is lower limit, 1500 is neutral and 2000 is upper limit." user="Standard">
+<field name="Range">800 2200</field>
+<field name="Increment">1</field>
+<field name="Units">pwm</field>
+</param>
+<param humanName="Maximum PWM" name="SERVOMAX" documentation="maximum PWM pulse width. Typically 1000 is lower limit, 1500 is neutral and 2000 is upper limit." user="Standard">
+<field name="Range">800 2200</field>
+<field name="Increment">1</field>
+<field name="Units">pwm</field>
+</param>
+<param humanName="Trim PWM" name="SERVOTRIM" documentation="Trim PWM pulse width. Typically 1000 is lower limit, 1500 is neutral and 2000 is upper limit." user="Standard">
+<field name="Range">800 2200</field>
+<field name="Increment">1</field>
+<field name="Units">pwm</field>
+</param>
+<param humanName="Servo reverse" name="SERVOREVERSED" documentation="Reverse servo operation. Set to 0 for normal operation. Set to 1 to reverse this channel." user="Standard">
+<values>
+<value code="0">Normal</value>
+<value code="1">Reversed</value>
+</values>
+</param>
+<param humanName="Servo output function" name="SERVOFUNCTION" documentation="Function assigned to this servo. Seeing this to Disabled(0) will setup this output for control by auto missions or MAVLink servo set commands. any other value will enable the corresponding function" user="Standard">
+<values>
+<value code="0">Disabled</value>
+<value code="1">RCPassThru</value>
+<value code="2">Flap</value>
+<value code="3">Flap_auto</value>
+<value code="4">Aileron</value>
+<value code="6">mount_pan</value>
+<value code="7">mount_tilt</value>
+<value code="8">mount_roll</value>
+<value code="9">mount_open</value>
+<value code="10">camera_trigger</value>
+<value code="11">release</value>
+<value code="12">mount2_pan</value>
+<value code="13">mount2_tilt</value>
+<value code="14">mount2_roll</value>
+<value code="15">mount2_open</value>
+<value code="16">DifferentialSpoiler1</value>
+<value code="17">DifferentialSpoiler2</value>
+<value code="18">AileronWithInput</value>
+<value code="19">Elevator</value>
+<value code="20">ElevatorWithInput</value>
+<value code="21">Rudder</value>
+<value code="24">Flaperon1</value>
+<value code="25">Flaperon2</value>
+<value code="26">GroundSteering</value>
+<value code="27">Parachute</value>
+<value code="28">EPM</value>
+<value code="29">LandingGear</value>
+<value code="30">EngineRunEnable</value>
+<value code="31">HeliRSC</value>
+<value code="32">HeliTailRSC</value>
+<value code="33">Motor1</value>
+<value code="34">Motor2</value>
+<value code="35">Motor3</value>
+<value code="36">Motor4</value>
+<value code="37">Motor5</value>
+<value code="38">Motor6</value>
+<value code="39">Motor7</value>
+<value code="40">Motor8</value>
+<value code="51">RCIN1</value>
+<value code="52">RCIN2</value>
+<value code="53">RCIN3</value>
+<value code="54">RCIN4</value>
+<value code="55">RCIN5</value>
+<value code="56">RCIN6</value>
+<value code="57">RCIN7</value>
+<value code="58">RCIN8</value>
+<value code="59">RCIN9</value>
+<value code="60">RCIN10</value>
+<value code="61">RCIN11</value>
+<value code="62">RCIN12</value>
+<value code="63">RCIN13</value>
+<value code="64">RCIN14</value>
+<value code="65">RCIN15</value>
+<value code="66">RCIN16</value>
+<value code="67">Ignition</value>
+<value code="68">Choke</value>
+<value code="69">Starter</value>
+<value code="70">Throttle</value>
+<value code="71">TrackerYaw</value>
+<value code="72">TrackerPitch</value>
+</values>
+</param>
+<param humanName="Automatic servo trim" name="SERVO_AUTO_TRIM" documentation="This enables automatic servo trim in flight. Servos will be trimed in stabilized flight modes when the aircraft is close to level. Changes to servo trim will be saved every 10 seconds and will persist between flights." user="Advanced">
+<values>
+<value code="0">Disable</value>
+<value code="1">Enable</value>
+</values>
+</param>
+</parameters>
+<parameters name="RC">
+<param humanName="RC min PWM" name="RCMIN" documentation="RC minimum PWM pulse width. Typically 1000 is lower limit, 1500 is neutral and 2000 is upper limit." user="Advanced">
+<field name="Range">800 2200</field>
+<field name="Increment">1</field>
+<field name="Units">pwm</field>
+</param>
+<param humanName="RC trim PWM" name="RCTRIM" documentation="RC trim (neutral) PWM pulse width. Typically 1000 is lower limit, 1500 is neutral and 2000 is upper limit." user="Advanced">
+<field name="Range">800 2200</field>
+<field name="Increment">1</field>
+<field name="Units">pwm</field>
+</param>
+<param humanName="RC max PWM" name="RCMAX" documentation="RC maximum PWM pulse width. Typically 1000 is lower limit, 1500 is neutral and 2000 is upper limit." user="Advanced">
+<field name="Range">800 2200</field>
+<field name="Increment">1</field>
+<field name="Units">pwm</field>
+</param>
+<param humanName="RC reversed" name="RCREVERSED" documentation="Reverse servo operation. Set to 0 for normal (forward) operation. Set to 1 to reverse this input channel." user="Advanced">
+<values>
+<value code="0">Normal</value>
+<value code="1">Reversed</value>
+</values>
+</param>
+<param humanName="RC dead-zone" name="RCDZ" documentation="dead zone around trim or bottom" user="Advanced">
+<field name="Range">0 200</field>
+<field name="Units">pwm</field>
 </param>
 </parameters>
 </libraries></paramfile>
