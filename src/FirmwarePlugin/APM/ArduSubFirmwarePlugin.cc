@@ -106,3 +106,15 @@ bool ArduSubFirmwarePlugin::supportsMotorInterference(void)
 {
     return false;
 }
+
+QString ArduSubFirmwarePlugin::vehicleImageOpaque(const Vehicle* vehicle) const
+{
+    Q_UNUSED(vehicle);
+    return QStringLiteral("/qmlimages/subVehicleArrowOpaque.png");
+}
+
+QString ArduSubFirmwarePlugin::vehicleImageOutline(const Vehicle* vehicle) const
+{
+    Q_UNUSED(vehicle);
+    return QStringLiteral("/qmlimages/subVehicleArrowOutline.png");
+}
