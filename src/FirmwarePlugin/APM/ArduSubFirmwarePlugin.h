@@ -37,7 +37,7 @@ public:
         RESERVED_1        = 1,
         ALT_HOLD          = 2,   // Depth hold
         RESERVED_3        = 3,
-        RESERVED_4        = 4,
+        GUIDED        = 4,
         RESERVED_5        = 5,
         RESERVED_6        = 6,
         RESERVED_7        = 7,
@@ -84,10 +84,16 @@ public:
     bool supportsMotorInterference(void);
 
     /// Return the resource file which contains the vehicle icon used in the flight view when the view is dark (Satellite for instance)
-    virtual QString vehicleImageOpaque(const Vehicle* vehicle) const override;
+    QString vehicleImageOpaque(const Vehicle* vehicle) const override;
 
     /// Return the resource file which contains the vehicle icon used in the flight view when the view is light (Map for instance)
-    virtual QString vehicleImageOutline(const Vehicle* vehicle) const override;
+    QString vehicleImageOutline(const Vehicle* vehicle) const override;
+
+    void setGuidedMode(Vehicle* vehicle, bool guidedMode) final;
+
+    bool isCapable(const Vehicle *vehicle, FirmwareCapabilities capabilities) final;
+
+    void guidedModeGotoLocation(Vehicle* vehicle, const QGeoCoordinate& gotoCoord) final;
 
     QString brandImage(const Vehicle* vehicle) const { Q_UNUSED(vehicle); return QStringLiteral("/qmlimages/APM/BrandImageSub"); }
     const FirmwarePlugin::remapParamNameMajorVersionMap_t& paramNameRemapMajorVersionMap(void) const final { return _remapParamName; }

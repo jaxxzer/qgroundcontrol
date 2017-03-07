@@ -25,6 +25,8 @@
 ///     @author Rustom Jehangir <rusty@bluerobotics.com>
 
 #include "ArduSubFirmwarePlugin.h"
+#include "QGCApplication.h"
+#include "MissionManager.h"
 
 bool ArduSubFirmwarePlugin::_remapParamNameIntialized = false;
 FirmwarePlugin::remapParamNameMajorVersionMap_t ArduSubFirmwarePlugin::_remapParamName;
@@ -36,6 +38,7 @@ APMSubMode::APMSubMode(uint32_t mode, bool settable) :
     enumToString.insert(MANUAL, "Manual");
     enumToString.insert(STABILIZE, "Stabilize");
     enumToString.insert(ALT_HOLD,  "Depth Hold");
+    enumToString.insert(GUIDED,  "Guided");
 
     setEnumToStringMapping(enumToString);
 }
@@ -46,6 +49,7 @@ ArduSubFirmwarePlugin::ArduSubFirmwarePlugin(void)
     supportedFlightModes << APMSubMode(APMSubMode::MANUAL ,true);
     supportedFlightModes << APMSubMode(APMSubMode::STABILIZE ,true);
     supportedFlightModes << APMSubMode(APMSubMode::ALT_HOLD  ,true);
+    supportedFlightModes << APMSubMode(APMSubMode::GUIDED  ,true);
     setSupportedModes(supportedFlightModes);
 
     if (!_remapParamNameIntialized) {
@@ -117,4 +121,32 @@ QString ArduSubFirmwarePlugin::vehicleImageOutline(const Vehicle* vehicle) const
 {
     Q_UNUSED(vehicle);
     return QStringLiteral("/qmlimages/subVehicleArrowOutline.png");
+}
+
+void ArduSubFirmwarePlugin::setGuidedMode(Vehicle* vehicle, bool guidedMode)
+{
+    if (guidedMode) {
+        vehicle->setFlightMode("Guided");
+    }
+}
+
+bool ArduSubFirmwarePlugin::isCapable(const Vehicle* vehicle, FirmwareCapabilities capabilities)
+{
+    Q_UNUSED(vehicle);
+
+    uint32_t vehicleCapabilities = SetFlightModeCapability | GuidedModeCapability | PauseVehicleCapability;
+
+    return (capabilities & vehicleCapabilities) == capabilities;
+}
+
+void ArduSubFirmwarePlugin::guidedModeGotoLocation(Vehicle* vehicle, const QGeoCoordinate& gotoCoord)
+{
+    if (qIsNaN(vehicle->altitudeRelative()->rawValue().toDouble())) {
+        qgcApp()->showMessage(QStringLiteral("Unable to go to location, vehicle position not known."));
+        return;
+    }
+
+    QGeoCoordinate coordWithAltitude = gotoCoord;
+    coordWithAltitude.setAltitude(vehicle->altitudeRelative()->rawValue().toDouble());
+    vehicle->missionManager()->writeArduPilotGuidedMissionItem(coordWithAltitude, false /* altChangeOnly */);
 }

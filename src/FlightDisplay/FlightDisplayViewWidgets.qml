@@ -26,7 +26,7 @@ Item {
     id: _root
 
     property alias  guidedModeBar:          _guidedModeBar
-    property bool   gotoEnabled:            _activeVehicle && _activeVehicle.guidedMode && _activeVehicle.flying
+    property bool   gotoEnabled:            _activeVehicle && _activeVehicle.guidedMode
     property var    qgcView
     property bool   isBackgroundDark
 
