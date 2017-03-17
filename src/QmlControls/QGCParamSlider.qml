@@ -65,6 +65,22 @@ Rectangle {
                     _param.value = value
                 }
             }
+
+            MouseArea {
+                anchors.fill: parent
+                onWheel: {
+                    // do nothing
+                    wheel.accepted = true;
+                }
+                onPressed: {
+                    // propogate to ComboBox
+                    mouse.accepted = false;
+                }
+                onReleased: {
+                    // propogate to ComboBox
+                    mouse.accepted = false;
+                }
+            }
         }
     }
 }
