@@ -48,7 +48,7 @@ Rectangle {
         }
 
         QGCLabel {
-            text: slide.value + " " + _param.units
+            text: slide.value.toFixed(2) + " " + _param.units
         }
 
         Slider {
