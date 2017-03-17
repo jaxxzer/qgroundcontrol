@@ -193,7 +193,8 @@ DropButton {
 
                 onClicked: {
                     dropButton.hideDropDown()
-                    map.center = fitHomePosition()
+//                    map.center = fitHomePosition()
+                    map.center = QtPositioning.coordinate(33.323917, -117.540667)
                 }
             }
 

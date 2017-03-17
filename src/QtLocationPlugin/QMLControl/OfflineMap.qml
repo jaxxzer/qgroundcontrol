@@ -45,7 +45,7 @@ QGCView {
     property var _mapAdjustedColor: _map.isSatelliteMap ? "white" : "black"
 
     readonly property real minZoomLevel: 3
-    readonly property real maxZoomLevel: 20
+    readonly property real maxZoomLevel: 21.9
 
     readonly property int _maxTilesForDownload: 100000
 
