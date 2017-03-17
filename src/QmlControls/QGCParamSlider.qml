@@ -13,43 +13,58 @@ Rectangle {
     property real _increment: 1
     property real _value
 
+    property bool _loadComplete: false
+
     property string _name
     property string _description
-    height: sliderRow.height*1.1
+    height: sliderColumn.height*1.1
     width: parent.width
-
-    Row {
-        id: sliderRow
-        Column {
-            QGCLabel {
-                text:       _name
-                font.family: ScreenTools.demiboldFontFamily
-            }
-
-            QGCLabel {
-                text: _description
-            }
-
-            Slider {
-                id:                 slide
-                anchors.left:       parent.left
-                anchors.right:      parent.right
-                minimumValue:       _min
-                maximumValue:       _max
-                stepSize:           _increment
-                tickmarksEnabled:   true
-                width: parent.width
-
-                onValueChanged: {
-                        _param.value = _value
-                }
-            }
-        }
-    }
 
     Component.onCompleted: {
         _value = _param.value
         _name = _param.name
+        _max = _param.max
+        _min = _param.min
+        _increment = _param.increment
         _description = _param.shortDescription
+        slide.minimumValue=      _min
+        slide.maximumValue=       _max
+        slide.value = _value
+
+        _loadComplete = true
+    }
+
+    Column {
+        id: sliderColumn
+        width: parent.width
+
+        QGCLabel {
+            text:       _name
+            font.family: ScreenTools.demiboldFontFamily
+        }
+
+        QGCLabel {
+            text: _description
+        }
+
+        QGCLabel {
+            text: slide.value + " " + _param.units
+        }
+
+        Slider {
+            id:                 slide
+            anchors.left:       parent.left
+            anchors.right:      parent.right
+
+            stepSize:           _increment
+            tickmarksEnabled:   true
+            width: parent.width
+
+            onValueChanged: {
+                if (_loadComplete) {
+                    _param.value = value
+                }
+            }
+        }
     }
 }

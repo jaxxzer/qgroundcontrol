@@ -33,12 +33,12 @@ SetupPage {
             QGCPalette { id: palette; colorGroupEnabled: true }
 
             // VEL parameters
-            property Fact _velXYP:              controller.getParameterFact(-1, "RC_FEEL_RP")
-            property Fact _velXYI:              controller.getParameterFact(-1, "r.ATC_RAT_RLL_P")
-            property Fact _velXYIMax:           controller.getParameterFact(-1, "r.ATC_RAT_RLL_I")
+//            property Fact _velXYP:              controller.getParameterFact(-1, "RC_FEEL_RP")
+//            property Fact _velXYI:              controller.getParameterFact(-1, "r.ATC_RAT_RLL_P")
+//            property Fact _velXYIMax:           controller.getParameterFact(-1, "r.ATC_RAT_RLL_I")
 
-            // POS parameters
-            property Fact _posXYP:              controller.getParameterFact(-1, "r.ATC_RAT_PIT_P")
+//            // POS parameters
+//            property Fact _posXYP:              controller.getParameterFact(-1, "r.ATC_RAT_PIT_P")
 
             // WPNAV parameters
             property Fact _wpnavAccel:          controller.getParameterFact(-1, "WPNAV_ACCEL")
@@ -86,7 +86,6 @@ SetupPage {
                     anchors.top:        parent.top
                     spacing:            _margins
 
-                    QGCParamSlider { _param: _wpnavAccel }
                     QGCParamSlider { _param: _wpnavAccelZ }
                     QGCParamSlider { _param: _wpnavLoitJerk }
                     QGCParamSlider { _param: _wpnavLoitMaxA }
@@ -96,6 +95,8 @@ SetupPage {
                     QGCParamSlider { _param: _wpnavSpeed }
                     QGCParamSlider { _param: _wpnavSpeedDown }
                     QGCParamSlider { _param: _wpnavSpeedUp }
+                    QGCParamSlider { _param: _wpnavAccel }
+
 
 
 
