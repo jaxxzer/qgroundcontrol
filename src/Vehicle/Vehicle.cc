@@ -2159,9 +2159,10 @@ void Vehicle::setSoloFirmware(bool soloFirmware)
     }
 }
 
-void Vehicle::motorTest(int motor, int percent, int timeoutSecs)
+void Vehicle::motorTest(int motor, int percent)
 {
-    sendMavCommand(_defaultComponentId, MAV_CMD_DO_MOTOR_TEST, motor, MOTOR_TEST_THROTTLE_PERCENT, percent, timeoutSecs);
+    // @param6: 2 == MOTOR_TEST_ORDER_BOARD
+    sendMavCommand(_defaultComponentId, MAV_CMD_DO_MOTOR_TEST, true, motor, MOTOR_TEST_THROTTLE_PERCENT, percent, 0, 0, 2);
 }
 
 void Vehicle::_newMissionItemsAvailable(void)
