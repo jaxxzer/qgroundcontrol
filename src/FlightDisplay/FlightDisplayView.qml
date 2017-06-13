@@ -148,7 +148,7 @@ QGCView {
             }
         } else {
             if (promptForMissionRemove && (_missionController.containsItems || _geoFenceController.containsItems || _rallyPointController.containsItems)) {
-                root.showDialog(missionCompleteDialogComponent, qsTr("Flight Plan complete"), showDialogDefaultWidth, StandardButton.Close)
+                root.showDialog(removeMissionDialogComponent, qsTr("Flight complete"), showDialogDefaultWidth, StandardButton.No | StandardButton.Yes)
             }
             promptForMissionRemove = false
         }
@@ -161,35 +161,17 @@ QGCView {
     }
 
     Component {
-        id: missionCompleteDialogComponent
+        id: removeMissionDialogComponent
 
-        QGCViewDialog {
-            QGCFlickable {
-                anchors.fill:   parent
-                contentHeight:  column.height
+        QGCViewMessage {
+            message: qsTr("Do you want to remove the mission from the vehicle?")
 
-                Column {
-                    id:                 column
-                    anchors.margins:    _margins
-                    anchors.left:       parent.left
-                    anchors.right:      parent.right
-                    spacing:            ScreenTools.defaultFontPixelHeight
+            function accept() {
+                _missionController.removeAllFromVehicle()
+                _geoFenceController.removeAllFromVehicle()
+                _rallyPointController.removeAllFromVehicle()
+                hideDialog()
 
-                    QGCLabel {
-                        text:                       qsTr("%1 Images Taken").arg(_activeVehicle.cameraTriggerPoints.count)
-                        anchors.horizontalCenter:   parent.horizontalCenter
-                        visible:                    _activeVehicle.cameraTriggerPoints.count != 0
-                    }
-
-                    QGCButton {
-                        text:                       qsTr("Remove plan from vehicle")
-                        anchors.horizontalCenter:   parent.horizontalCenter
-                        onClicked: {
-                            _planMasterController.removeAllFromVehicle()
-                            hideDialog()
-                        }
-                    }
-                }
             }
         }
     }
@@ -351,41 +333,41 @@ QGCView {
             property var qgcView: root
         }
 
-        // Button to start/stop video recording
-        Item {
-            z:                  _flightVideoPipControl.z + 1
-            anchors.margins:    ScreenTools.defaultFontPixelHeight / 2
-            anchors.bottom:     _flightVideo.bottom
-            anchors.right:      _flightVideo.right
-            height:             ScreenTools.defaultFontPixelHeight * 2
-            width:              height
-            visible:            QGroundControl.videoManager.videoRunning && QGroundControl.settingsManager.videoSettings.showRecControl.rawValue
-            opacity:            0.75
+//        // Button to start/stop video recording
+//        Item {
+//            z:                  _flightVideoPipControl.z + 1
+//            anchors.margins:    ScreenTools.defaultFontPixelHeight / 2
+//            anchors.bottom:     _flightVideo.bottom
+//            anchors.right:      _flightVideo.right
+//            height:             ScreenTools.defaultFontPixelHeight * 2
+//            width:              height
+//            visible:            QGroundControl.videoManager.videoRunning && QGroundControl.videoManager.recordingEnabled
+//            opacity:            0.75
 
-            Rectangle {
-                anchors.top:        parent.top
-                anchors.bottom:     parent.bottom
-                width:              height
-                radius:             QGroundControl.videoManager && QGroundControl.videoManager.videoReceiver && QGroundControl.videoManager.videoReceiver.recording ? 0 : height
-                color:              "red"
-            }
+//            Rectangle {
+//                anchors.top:        parent.top
+//                anchors.bottom:     parent.bottom
+//                width:              height
+//                radius:             QGroundControl.videoManager && QGroundControl.videoManager.videoReceiver && QGroundControl.videoManager.videoReceiver.recording ? 0 : height
+//                color:              "red"
+//            }
 
-            QGCColoredImage {
-                anchors.top:                parent.top
-                anchors.bottom:             parent.bottom
-                anchors.horizontalCenter:   parent.horizontalCenter
-                width:                      height * 0.625
-                sourceSize.width:           width
-                source:                     "/qmlimages/CameraIcon.svg"
-                fillMode:                   Image.PreserveAspectFit
-                color:                      "white"
-            }
+//            QGCColoredImage {
+//                anchors.top:                parent.top
+//                anchors.bottom:             parent.bottom
+//                anchors.horizontalCenter:   parent.horizontalCenter
+//                width:                      height * 0.625
+//                sourceSize.width:           width
+//                source:                     "/qmlimages/CameraIcon.svg"
+//                fillMode:                   Image.PreserveAspectFit
+//                color:                      "white"
+//            }
 
-            MouseArea {
-                anchors.fill:   parent
-                onClicked:      QGroundControl.videoManager.videoReceiver && QGroundControl.videoManager.videoReceiver.recording ? QGroundControl.videoManager.videoReceiver.stopRecording() : QGroundControl.videoManager.videoReceiver.startRecording()
-            }
-        }
+//            MouseArea {
+//                anchors.fill:   parent
+//                onClicked:      QGroundControl.videoManager.videoReceiver && QGroundControl.videoManager.videoReceiver.recording ? QGroundControl.videoManager.videoReceiver.stopRecording() : QGroundControl.videoManager.videoReceiver.startRecording()
+//            }
+//        }
 
         MultiVehicleList {
             anchors.margins:    _margins
@@ -437,12 +419,6 @@ QGCView {
                     text:       _guidedController.startMissionMessage,
                     action:     _guidedController.actionStartMission,
                     visible:    _guidedController.showStartMission
-                },
-                {
-                    title:      _guidedController.continueMissionTitle,
-                    text:       _guidedController.continueMissionMessage,
-                    action:     _guidedController.actionContinueMission,
-                    visible:    _guidedController.showContinueMission
                 },
                 {
                     title:      _guidedController.resumeMissionTitle,
@@ -509,7 +485,11 @@ QGCView {
             ]
 
             onClicked: {
-                guidedActionsController.closeAll()
+                //-- Dismiss any other dialog
+                rootLoader.sourceComponent  = null
+                guidedActionConfirm.visible = false
+                guidedActionList.visible    = false
+                altitudeSlider.visible      = false
                 var action = model[index].action
                 if (action === -1) {
                     if (index == 4) {
@@ -529,7 +509,6 @@ QGCView {
             id:                 guidedActionsController
             missionController:  _missionController
             confirmDialog:      guidedActionConfirm
-            altitudeSlider:     _altitudeSlider
             z:                  _flightVideoPipControl.z + 1
 
             onShowStartMissionChanged: {
@@ -549,20 +528,6 @@ QGCView {
                     confirmAction(actionResumeMission)
                 }
             }
-
-            onShowLandAbortChanged: {
-                if (showLandAbort) {
-                    confirmAction(actionLandAbort)
-                }
-            }
-
-            /// Close all dialogs
-            function closeAll() {
-                rootLoader.sourceComponent  = null
-                guidedActionConfirm.visible = false
-                guidedActionList.visible    = false
-                altitudeSlider.visible      = false
-            }
         }
 
         GuidedActionConfirm {
@@ -580,6 +545,7 @@ QGCView {
             anchors.bottom:             parent.bottom
             anchors.horizontalCenter:   parent.horizontalCenter
             guidedController:           _guidedController
+            altitudeSlider:             _altitudeSlider
         }
 
         //-- Altitude slider
