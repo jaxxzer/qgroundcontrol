@@ -584,36 +584,38 @@ QGCView {
                                 fact:               QGroundControl.settingsManager.videoSettings.gridLines
                             }
                         }
-                        Row {
-                            spacing:    ScreenTools.defaultFontPixelWidth
-                            visible:    QGroundControl.settingsManager.videoSettings.videoSavePath.visible && QGroundControl.videoManager.isGStreamer && QGroundControl.videoManager.recordingEnabled
 
-                            QGCLabel {
-                                anchors.baseline:   videoBrowse.baseline
-                                text:               qsTr("Save path:")
-                                enabled:            promptSaveLog.checked
-                            }
-                            QGCLabel {
-                                anchors.baseline:   videoBrowse.baseline
-                                text:               _videoPath.value == "" ? qsTr("<not set>") : _videoPath.value
-                            }
-                            QGCButton {
-                                id:         videoBrowse
-                                text:       "Browse"
-                                onClicked:  videoDialog.openForLoad()
+//                        Row {
+//                            spacing:    ScreenTools.defaultFontPixelWidth
+//                            visible:    QGroundControl.settingsManager.videoSettings.videoSavePath.visible && QGroundControl.videoManager.isGStreamer && QGroundControl.videoManager.recordingEnabled
 
-                                QGCFileDialog {
-                                    id:             videoDialog
-                                    title:          "Choose a location to save video files."
-                                    folder:         "file://" + _videoPath.value
-                                    selectFolder:   true
+//                            QGCLabel {
+//                                anchors.baseline:   videoBrowse.baseline
+//                                text:               qsTr("Save path:")
+//                                enabled:            promptSaveLog.checked
+//                            }
+//                            QGCLabel {
+//                                anchors.baseline:   videoBrowse.baseline
+//                                text:               _videoPath.value == "" ? qsTr("<not set>") : _videoPath.value
+//                            }
+//                            QGCButton {
+//                                id:         videoBrowse
+//                                text:       "Browse"
+//                                onClicked:  videoDialog.openForLoad()
 
-                                    onAcceptedForLoad: {
-                                        _videoPath.value = file
-                                    }
-                                }
-                            }
-                        }
+//                                QGCFileDialog {
+//                                    id:             videoDialog
+//                                    title:          "Choose a location to save video files."
+//                                    folder:         "file://" + _videoPath.value
+//                                    selectFolder:   true
+
+//                                    onAcceptedForLoad: {
+//                                        _videoPath.value = file
+//                                    }
+//                                }
+//                            }
+//                        }
+
                     }
                 } // Video Source - Rectangle
 
