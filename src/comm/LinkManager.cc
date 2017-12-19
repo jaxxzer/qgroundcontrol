@@ -465,6 +465,13 @@ void LinkManager::_updateAutoConnectLinks(void)
         udpConfig->setDynamic(true);
         SharedLinkConfigurationPointer config = addConfiguration(udpConfig);
         createConnectedLink(config);
+
+        udpConfig = new UDPConfiguration("Water Linked GPS");
+        udpConfig->setLocalPort(14551);
+        udpConfig->setDynamic(true);
+        config = addConfiguration(udpConfig);
+        createConnectedLink(config);
+
         emit linkConfigurationsChanged();
     }
 
